@@ -15,8 +15,6 @@ const auth = (req, res, next)=>{
 
         req.userId = decoded.id;
         req.userName = decoded.name;
-
-        console.log(req)
         next();
 
     }catch{

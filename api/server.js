@@ -1,6 +1,6 @@
 import express from 'express';
 import publicRouter from './routes/public.js';
-import privateRouter from './routes/privete.js'
+import privateRouter from './routes/private.js'
 import auth from "./middleware/auth.js"
 const app = express();
 app.use(express.json());
