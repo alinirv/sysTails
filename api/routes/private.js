@@ -1,10 +1,13 @@
 import express from "express";
 import { PrismaClient } from '@prisma/client';
 import DiceController from '../controllers/DiceController.js';
+import CharacterController from '../controllers/CharacterController.js'
 
 const router = express.Router();
 const prisma = new PrismaClient();
 const diceController = new DiceController();
+const  characterController = new CharacterController();
+
 
 router.get('/home', async (req, res) => {
     try {
@@ -18,6 +21,8 @@ router.get('/home', async (req, res) => {
 router.get('/roll', diceController.roll);
 
 router.get('/roll-modified/:modifiers', diceController.rollModified);
+
+router.post('/character',characterController.teste)
 
 
 export default router
