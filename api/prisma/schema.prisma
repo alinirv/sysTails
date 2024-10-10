@@ -20,9 +20,10 @@ model User {
   password String
   characters Character[] 
 }
+
 model Character {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
+  name        String 
   legacy      String
   legacyAbilities Json
   parameters  Json
