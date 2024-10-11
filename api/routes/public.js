@@ -11,6 +11,17 @@ router.post('/signup', async (req, res) => {
     try {
         const user = req.body;
 
+        // Verificar se o email já existe
+        const existingUser = await prisma.user.findUnique({
+            where: {
+                email: user.email,
+            },
+        });
+
+        if (existingUser) {
+            return res.status(400).json('Email já existe!');
+        }
+
         const salt = await bcrypt.genSalt(10);
 
         const hashPassword = await bcrypt.hash(user.password, salt);
@@ -52,11 +63,11 @@ router.post('/login', async (req, res) => {
         }
 
         //generate token
-        const payload ={
+        const payload = {
             id: user.id,
             name: user.name
         };
-        const token = jwt.sign(payload, JWT_SECRET,{expiresIn:'1d'})
+        const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1d' })
 
         res.status(200).json(token);
 
