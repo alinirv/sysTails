@@ -37,6 +37,7 @@ model Character {
 
 model Sheet {
   id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  name           String 
   pda            Int
   pointsLife     Int
   pointsEnergy   Int
