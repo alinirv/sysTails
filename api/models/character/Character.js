@@ -13,7 +13,7 @@ class Character {
             dexterity: 0,
             spirit: 0,
             precision: 0,
-            strength: 0,
+            vigor: 0,
             ...parameters 
         };
         this.combat = {

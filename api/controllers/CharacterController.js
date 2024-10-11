@@ -42,7 +42,7 @@ class CharacterController {
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'An error occurred while fetching the character.' });
-      throw error;  // Re-throw para ser capturado no lugar onde for chamado
+      throw error;
     }
   };
 
