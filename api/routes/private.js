@@ -39,7 +39,10 @@ router.delete('/characters/delete/:name', characterController.deleteCharacter);
 
 router.post('/sheet',  sheetsController.createSheet);
 
-router.get('/sheer/find/:name',sheetsController.getSheet);
+router.get('/sheet/find/:name',sheetsController.getSheet);
+
+router.get('/sheet/findAll',sheetsController.getAllSheets);
+
 
 
 
