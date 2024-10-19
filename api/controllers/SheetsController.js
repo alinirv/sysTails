@@ -40,7 +40,7 @@ class SheetsController {
       console.error('Erro ao criar ficha:', error);
       return res.status(500).json({ message: 'Erro ao criar ficha', error });
     }
-  }
+  };
 
   async getSheet(req, res) {
     const { name } = req.params;
@@ -82,6 +82,32 @@ class SheetsController {
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'An error occurred while fetching sheets.' });
+    }
+  };
+
+  async deleteSheet(req, res) {
+    const { name } = req.params;
+    const userId = req.userId;
+    try {
+      const sheet = await prisma.sheet.findFirst({
+        where: {
+          name: name,
+          userId: userId,
+        },
+      });
+      if (sheet) {
+        await prisma.sheet.delete({
+          where: {
+            id: sheet.id
+          }
+        });
+        return res.status(200).json({ message: 'sheet deleted successfully.' });
+      } else {
+        return res.status(404).json({ message: 'sheet not found.' });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'An error occurred while updating the sheet parameter.' });
     }
   };
 
