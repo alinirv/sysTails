@@ -38,6 +38,12 @@ class CharacterController {
           userId: userId,
         },
       });
+
+      if (!character) {
+        return res.status(400).json('Personagem não encontrado, verifique o nome do personagem!');
+
+      }
+
       res.status(200).json(character);
     } catch (error) {
       console.error(error);
