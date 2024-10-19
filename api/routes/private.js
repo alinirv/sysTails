@@ -39,6 +39,8 @@ router.delete('/characters/delete/:name', characterController.deleteCharacter);
 
 router.post('/sheet',  sheetsController.createSheet);
 
+router.get('/sheer/find/:name',sheetsController.getSheet);
+
 
 
 export default router;
