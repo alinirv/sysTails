@@ -8,10 +8,9 @@ class SheetsController {
     async createSheet(req, res) {
         const { name, pda, character, equipment, inventory } = req.body;
         // Verificar se o email já existe
-        const existingSheetsName = await prisma.sheet.findUnique({
+        const existingSheetsName = await prisma.sheet.findFirst({
             where: {
                 name: name,
-                userId: req.userId,
             },
         });
 
