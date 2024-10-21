@@ -111,6 +111,43 @@ class SheetsController {
     }
   };
 
+  async updateSheet(req, res) {
+    const { name } = req.params;
+    const userId = req.userId;
+    const { pda, pointsLife, pointsEnergy, movement, block, equipment, inventory } = req.body;
+
+    try {
+      const sheet = await prisma.sheet.findFirst({
+        where: {
+          name: name,
+          userId: userId,
+        },
+      });
+
+      if (sheet) {
+        const updatedSheet = await prisma.sheet.update({
+          where: { id: sheet.id, userId: userId },
+          data: {
+            pda: pda !== undefined ? pda : sheet.pda,
+            pointsLife: pointsLife !== undefined ? pointsLife : sheet.pointsLife,
+            pointsEnergy: pointsEnergy !== undefined ? pointsEnergy : sheet.pointsEnergy,
+            movement: movement !== undefined ? movement : sheet.movement,
+            block: block !== undefined ? block : sheet.block,
+            equipment: equipment ? { ...sheet.equipment, ...equipment } : sheet.equipment,
+            inventory: inventory ? { ...sheet.inventory, ...inventory } : sheet.inventory,
+          },
+        });
+        return res.status(200).json(updatedSheet);
+      } else {
+        return res.status(404).json({ message: 'sheet not found.' });
+      }
+
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'An error occurred while updating the sheet parameter.' });
+    }
+  };
+
 }
 
 export default SheetsController;

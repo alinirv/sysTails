@@ -50,12 +50,10 @@ class Sheet {
     }
 
     calculateMovement() {
-        console.log('#############'+this.character)
         return 6 + Math.floor(this.character.parameters.agility / 2); // aredonda para baixo
     }
 
     calculateBlock() {
-
         return this.equipment.armor.block + this.equipment.shield.block || 0;
     }
 }

@@ -45,6 +45,8 @@ router.get('/sheet/findAll',sheetsController.getAllSheets);
 
 router.delete('/sheet/delete/:name', sheetsController.deleteSheet);
 
+router.put('/sheet/update/:name', sheetsController.updateSheet);
+
 
 
 
