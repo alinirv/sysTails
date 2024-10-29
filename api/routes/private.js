@@ -3,12 +3,14 @@ import { PrismaClient } from '@prisma/client';
 import DiceController from '../controllers/DiceController.js';
 import CharacterController from '../controllers/CharacterController.js'
 import SheetsController from "../controllers/SheetsController.js";
+import CampaingController from "../controllers/CampaingController.js";
 
 const router = express.Router();
 const prisma = new PrismaClient();
 const diceController = new DiceController();
 const  characterController = new CharacterController();
 const sheetsController = new SheetsController();
+const campaingController = new CampaingController
 
 //teste
 router.get('/home', async (req, res) => {
@@ -47,9 +49,19 @@ router.delete('/sheet/delete/:name', sheetsController.deleteSheet);
 
 router.put('/sheet/update/:name', sheetsController.updateSheet);
 
+router.post('/campaing', campaingController.createCampaign);
 
+router.post('/campaing/joinCampaign', campaingController.joinCampaign);
 
+router.get('/campaing/findSheets', campaingController.getAllCampaignSheets);
 
+router.get('/campaing/find', campaingController.getUserCampaigns);
+
+router.delete('/campaing/delete/:token', campaingController.deleteCampaign);
+
+router.delete('/campaing/deleteSheets', campaingController.deleteSheetCampaign);
+
+router.put('/camapaing/update/:token',  campaingController.updateCampaingStatus);
 
 
 export default router;
