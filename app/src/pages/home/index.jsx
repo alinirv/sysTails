@@ -1,8 +1,15 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import imagem from '../../assets/10091.png'
 import Footer from '../../components/footer/Footer';
 
 const Home = () => {
+    const navigate = useNavigate(); 
+
+    const handleLoginRedirect = () => {
+        navigate('/login'); 
+    };
+
     return (
         <div>
         <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-slate-900 to-teal-700">
@@ -21,7 +28,7 @@ const Home = () => {
                     Sendo aqui que entra o Tails! Como seu melhor companheiro, ele está aqui para você desfrutar desse sistema em poucos cliques, com rápidas criações de personagens, seleções de poderes e magias, além de um gerenciamento geral para mestres e jogadores.
                 </p>
                 <div class="flex justify-center py-5">
-                    <button class="w-3/6 bg-teal-600 text-slate-950 font-semibold py-2 rounded-md hover:none">
+                    <button onClick={handleLoginRedirect} class="w-3/6 bg-teal-600 text-slate-950 font-semibold py-2 rounded-md hover:none">
                         Comece Agora
                     </button>
                 </div>
