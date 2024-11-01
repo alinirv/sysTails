@@ -19,7 +19,7 @@ const Home = () => {
                     Sendo aqui que entra o Tails! Como seu melhor companheiro, ele está aqui para você desfrutar desse sistema em poucos cliques, com rápidas criações de personagens, seleções de poderes e magias, além de um gerenciamento geral para mestres e jogadores.
                 </p>
                 <div class="flex justify-center py-5">
-                    <button class="w-3/6 bg-teal-600 text-slate-900 font-semibold py-2 rounded-md hover:none">
+                    <button class="w-3/6 bg-teal-600 text-slate-950 font-semibold py-2 rounded-md hover:none">
                         Comece Agora
                     </button>
                 </div>
