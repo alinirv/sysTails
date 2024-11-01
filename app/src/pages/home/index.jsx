@@ -1,8 +1,10 @@
 import React from 'react';
 import imagem from '../../assets/10091.png'
+import Footer from '../../components/footer/Footer';
 
 const Home = () => {
     return (
+        <div>
         <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-slate-900 to-teal-700">
             <div class="bg-slate-950 text-white max-w-screen-lg w-full px-4 py-6 rounded-lg items-center" >
                 <div className="px-10">
@@ -24,7 +26,11 @@ const Home = () => {
                     </button>
                 </div>
             </div>
+           
         </div>
+        <Footer/> 
+        </div>
+        
     );
 };
 
