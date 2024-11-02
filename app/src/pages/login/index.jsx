@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
 import Footer from '../../components/footer/Footer';
+import Navibar from '../../components/header/Navibar';
 
 function Login() {
     return (
         <div>
+            <Navibar />
             <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-slate-900 to-teal-700">
                 <div className="bg-slate-950 rounded-lg shadow-lg p-8 max-w-md w-full">
                     <h2 className="text-2xl font-bold text-center text-white mb-6">Login</h2>
