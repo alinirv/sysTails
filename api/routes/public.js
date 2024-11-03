@@ -41,7 +41,9 @@ router.post('/signup', async (req, res) => {
         };
         const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1d' })
 
-        return res.status(200).json(token);
+        const userID = user.id
+
+        return res.status(200).json({token,userID });
 
     } catch (err) {
         res.status(500).json('Error no servidor, tente mais tarde!');
@@ -74,8 +76,9 @@ router.post('/login', async (req, res) => {
             name: user.name
         };
         const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1d' })
+        const userID = user.id
 
-        return res.status(200).json(token);
+        return res.status(200).json({token,userID });
 
 
     } catch (err) {
