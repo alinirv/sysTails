@@ -4,6 +4,7 @@ import Home from  './pages/home'
 import Login  from './pages/login'
 import Signup from './pages/register'
 import UserDashboard from './pages/userDashboard'
+import PrivateRoute from './components/auth/PrivateRoute'
 
 function App() {
 
@@ -13,7 +14,9 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path='/signup' element={<Signup  />} />
         <Route path="/login" element={<Login />} />
+        <Route element={<PrivateRoute />}>
         <Route path="/dashboard" element={<UserDashboard />} />
+        </Route>
       </Routes>
     </BrowserRouter>
 
