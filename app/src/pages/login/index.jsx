@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link,  useNavigate } from 'react-router-dom';
 import Footer from '../../components/footer/Footer';
 import Navibar from '../../components/header/Navibar';
 import api from '../../services/api';
@@ -7,9 +7,10 @@ import api from '../../services/api';
 function Login() {
     const emailRef = useRef();
     const passwordRef = useRef();
+    const navigate  = useNavigate();
 
     async function handleSubmit(event) {
-        event.preventDefault()
+        event.preventDefault();
         try {
             const {data: token } = await api.post('/login', {
                 password: passwordRef.current.value,
@@ -17,8 +18,7 @@ function Login() {
             })
             localStorage.setItem('token', token)
 
-            alert("login ok!")
-            console.log(token)
+            navigate('/dashboard')
 
         } catch (err) {
             alert(err.response.data)
