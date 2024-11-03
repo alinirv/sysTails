@@ -34,7 +34,15 @@ router.post('/signup', async (req, res) => {
             }
 
         })
-        res.status(201).json(userdb);
+        //generate token
+        const payload = {
+            id: userdb.id,
+            name: userdb.name
+        };
+        const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1d' })
+
+        return res.status(200).json(token);
+
     } catch (err) {
         res.status(500).json('Error no servidor, tente mais tarde!');
 
@@ -45,17 +53,15 @@ router.post('/login', async (req, res) => {
     try {
         const userInfo = req.body;
 
-        //find user in database
         const user = await prisma.user.findUnique({
             where: { email: userInfo.email },
         })
 
-        // check if the user exists
+
         if (!user) {
             return res.status(404).json('Usuário não encontrado!');
         }
 
-        //validate that the password is correct
         const isMatch = await bcrypt.compare(userInfo.password, user.password);
 
         if (!isMatch) {
@@ -69,7 +75,7 @@ router.post('/login', async (req, res) => {
         };
         const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1d' })
 
-        return  res.status(200).json(token);
+        return res.status(200).json(token);
 
 
     } catch (err) {
