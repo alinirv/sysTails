@@ -1,30 +1,32 @@
 import { useRef } from 'react';
-import { Link, useSubmit } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Footer from '../../components/footer/Footer';
 import Navibar from '../../components/header/Navibar';
 import api from '../../services/api';
 
-
-
 function Register() {
-    const nameRef = useRef()
-    const emailRef = useRef()
-    const passwoedRef = useRef()
+    const nameRef = useRef();
+    const emailRef = useRef();
+    const passwordRef = useRef();
+    const navigate = useNavigate();
 
     async function handleSubmit(event) {
-        event.preventDefault()
+        event.preventDefault();
+
         try {
-            await api.post('/signup', {
+            const {data: token} = await api.post('/signup', {
                 name: nameRef.current.value,
                 email: emailRef.current.value,
-                password: passwoedRef.current.value
-            })
-            alert("Usuário cadastrado com sucesso!")
-
+                password: passwordRef.current.value
+            });
+            if (token) {
+                localStorage.setItem('token', token); 
+                navigate('/dashboard'); 
+            }
         } catch (err) {
-           alert(err.response.data)
+            
+            alert(err.response?.data || 'Erro desconhecido');
         }
-
     }
 
     return (
@@ -47,7 +49,7 @@ function Register() {
                             className="w-full p-3 border border-slate-800 rounded-md focus:outline-none focus:ring-2 focus:none bg-transparent text-white"
                         />
                         <input
-                            ref={passwoedRef}
+                            ref={passwordRef}
                             placeholder="Senha"
                             type="password"
                             className="w-full p-3 border border-slate-800 rounded-md focus:outline-none focus:ring-2 focus:none bg-transparent text-white"
@@ -56,12 +58,12 @@ function Register() {
                             type="submit"
                             className="w-full bg-teal-600 text-slate-950 font-semibold py-2 rounded-md hover:none transition duration-200"
                         >
-                            Increva-se
+                            Inscreva-se
                         </button>
                     </form>
                     <p className="mt-4 text-center text-gray-600">
                         Já possui uma conta?{' '}
-                        <Link to='/login' className="text-white hover:underline">
+                        <Link to="/login" className="text-white hover:underline">
                             Entrar
                         </Link>
                     </p>
