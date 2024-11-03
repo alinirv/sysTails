@@ -17,15 +17,15 @@ const Navibar = ({ isLoggedIn, onLogout }) => {
             >
                 <div className="flex w-full items-center justify-between px-3">
                     <div>
-                        <a className="mx-2 my-1 flex items-center lg:mb-0 lg:mt-0" href="#">
+                        <Link to="/" className="mx-2 my-1 flex items-center lg:mb-0 lg:mt-0" href="#">
                             <img
                                 className="me-8"
                                 src={imagem}
-                                style={{ height: '32px' }} // Aumente a altura da logo
+                                style={{ height: '32px' }}
                                 alt="TE Logo"
                                 loading="lazy"
                             />
-                        </a>
+                        </Link>
                     </div>
 
                     <div className="flex-grow flex justify-center items-center">
