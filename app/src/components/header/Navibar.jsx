@@ -1,12 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import imagem from '../../assets/002211.png';
 
-const Navibar = ({ isLoggedIn, onLogout }) => {
+const Navibar = () => {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        setIsLoggedIn(!!token);
+    }, []);
 
     const handleLoginRedirect = () => {
         navigate('/login');
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        setIsLoggedIn(false);
+        navigate('/');
     };
 
     return (
@@ -17,12 +29,12 @@ const Navibar = ({ isLoggedIn, onLogout }) => {
             >
                 <div className="flex w-full items-center justify-between px-3">
                     <div>
-                        <Link to="/" className="mx-2 my-1 flex items-center lg:mb-0 lg:mt-0" href="#">
+                        <Link to="/" className="mx-2 my-1 flex items-center lg:mb-0 lg:mt-0">
                             <img
                                 className="me-8"
                                 src={imagem}
                                 style={{ height: '32px' }}
-                                alt="TE Logo"
+                                alt="Logo Tails"
                                 loading="lazy"
                             />
                         </Link>
@@ -30,63 +42,49 @@ const Navibar = ({ isLoggedIn, onLogout }) => {
 
                     <div className="flex-grow flex justify-center items-center">
                         <ul className="list-style-none flex space-x-6">
-                            {isLoggedIn ? (
-                                <>
-                                    <li data-twe-nav-item-ref>
-                                        <Link
-                                            to="/campanhas"
-                                            className="text-teal-300 transition duration-200 hover:text-teal-500 focus:text-teal-500"
-                                            aria-current="page"
-                                            data-twe-nav-link-ref
-                                        >
-                                            Campanhas
-                                        </Link>
-                                    </li>
-                                    <li data-twe-nav-item-ref>
-                                        <Link
-                                            to="/fichas"
-                                            className="text-teal-300 transition duration-200 hover:text-teal-500 focus:text-teal-500"
-                                            aria-current="page"
-                                            data-twe-nav-link-ref
-                                        >
-                                            Fichas
-                                        </Link>
-                                    </li>
-                                </>
-                            ) : (
-                                <>
-                                    <li data-twe-nav-item-ref>
-                                        <Link
-                                            to="/"
-                                            className="text-teal-300 transition duration-200 hover:text-teal-500 focus:text-teal-500"
-                                            aria-current="page"
-                                            data-twe-nav-link-ref
-                                        >
-                                            Sobre
-                                        </Link>
-                                    </li>
-                                    <li data-twe-nav-item-ref>
-                                        <a
-                                            src="https://www.catarse.me/users/1892319"
-                                            className="text-teal-300 transition duration-200 hover:text-teal-500 focus:text-teal-500"
-                                            aria-current="page"
-                                            data-twe-nav-link-ref
-                                        >
-                                            Gaia
-                                        </a>
-                                    </li>
-                                    <li data-twe-nav-item-ref>
-                                        <Link
-                                            to="/campanhas"
-                                            className="text-teal-300 transition duration-200 hover:text-teal-500 focus:text-teal-500"
-                                            aria-current="page"
-                                            data-twe-nav-link-ref
-                                        >
-                                            Patente
-                                        </Link>
-                                    </li>
-                                </>
-                            )}
+                            <li data-twe-nav-item-ref>
+                                <Link
+                                    to="/sobre"
+                                    className="text-teal-300 transition duration-200 hover:text-teal-500 focus:text-teal-500"
+                                    aria-current="page"
+                                    data-twe-nav-link-ref
+                                >
+                                    Sobre
+                                </Link>
+                            </li>
+                            <li data-twe-nav-item-ref>
+                                <a
+                                    href="https://www.catarse.me/users/1892319"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-teal-300 transition duration-200 hover:text-teal-500 focus:text-teal-500"
+                                    aria-current="page"
+                                    data-twe-nav-link-ref
+                                >
+                                    Gaia: O Prelúdio
+                                </a>
+                            </li>
+                            <li data-twe-nav-item-ref>
+                                <Link
+                                    to="/campanhas"
+                                    className="text-teal-300 transition duration-200 hover:text-teal-500 focus:text-teal-500"
+                                    aria-current="page"
+                                    data-twe-nav-link-ref
+                                >
+                                    Campanhas
+                                </Link>
+                            </li>
+                            <li data-twe-nav-item-ref>
+                                <Link
+                                    to="/fichas"
+                                    className="text-teal-300 transition duration-200 hover:text-teal-500 focus:text-teal-500"
+                                    aria-current="page"
+                                    data-twe-nav-link-ref
+                                >
+                                    Fichas
+                                </Link>
+                            </li>
+
                         </ul>
                     </div>
 
@@ -96,7 +94,7 @@ const Navibar = ({ isLoggedIn, onLogout }) => {
                             data-twe-ripple-init
                             data-twe-ripple-color="light"
                             className="me-3 inline-block rounded px-3 py-2 text-xs font-medium uppercase leading-normal text-teal-300 hover:text-teal-400 focus:text-teal-500"
-                            onClick={isLoggedIn ? onLogout : handleLoginRedirect}
+                            onClick={isLoggedIn ? handleLogout : handleLoginRedirect}
                         >
                             {isLoggedIn ? 'Sair' : 'Entrar'}
                         </button>

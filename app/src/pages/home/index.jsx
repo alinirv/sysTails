@@ -8,12 +8,12 @@ const Home = () => {
     const navigate = useNavigate();
 
     const handleLoginRedirect = () => {
-        navigate('/login');
+        localStorage.getItem('token')? navigate('/dashboard'): navigate('/login')
     };
 
     return (
         <div>
-            <Navibar isLoggedIn={false} />
+            <Navibar/>
             <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-slate-900 to-teal-700 py-10">
 
                 <div className="bg-slate-950 text-white max-w-screen-lg w-full px-4 py-6 rounded-lg items-center" >
