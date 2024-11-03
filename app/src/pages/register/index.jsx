@@ -14,13 +14,15 @@ function Register() {
         event.preventDefault();
 
         try {
-            const {data: token} = await api.post('/signup', {
+            const response = await api.post('/signup', {
                 name: nameRef.current.value,
                 email: emailRef.current.value,
                 password: passwordRef.current.value
             });
+            const { token, userID } = response.data;
             if (token) {
-                localStorage.setItem('token', token); 
+                localStorage.setItem('token', token);
+                localStorage.setItem('userId', userID) 
                 navigate('/dashboard'); 
             }
         } catch (err) {

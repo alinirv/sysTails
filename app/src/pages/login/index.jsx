@@ -12,12 +12,14 @@ function Login() {
     async function handleSubmit(event) {
         event.preventDefault();
         try {
-            const {data: token } = await api.post('/login', {
+            const response = await api.post('/login', {
                 password: passwordRef.current.value,
                 email: emailRef.current.value
             })
+            const { token, userID } = response.data;
             if (token) {
-                localStorage.setItem('token', token); 
+                localStorage.setItem('token', token);
+                localStorage.setItem('userId', userID) 
                 navigate('/dashboard'); 
             }
         } catch (err) {  

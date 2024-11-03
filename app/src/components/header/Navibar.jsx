@@ -17,6 +17,7 @@ const Navibar = () => {
 
     const handleLogout = () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('userId');
         setIsLoggedIn(false);
         navigate('/');
     };
@@ -76,7 +77,7 @@ const Navibar = () => {
                             </li>
                             <li data-twe-nav-item-ref>
                                 <Link
-                                    to="/fichas"
+                                    to="/sheets"
                                     className="text-teal-300 transition duration-200 hover:text-teal-500 focus:text-teal-500"
                                     aria-current="page"
                                     data-twe-nav-link-ref
