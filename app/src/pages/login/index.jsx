@@ -16,13 +16,12 @@ function Login() {
                 password: passwordRef.current.value,
                 email: emailRef.current.value
             })
-            localStorage.setItem('token', token)
-
-            navigate('/dashboard')
-
-        } catch (err) {
-            alert(err.response.data)
-        
+            if (token) {
+                localStorage.setItem('token', token); 
+                navigate('/dashboard'); 
+            }
+        } catch (err) {  
+            alert(err.response?.data || 'Erro desconhecido');
         }
 
     }
