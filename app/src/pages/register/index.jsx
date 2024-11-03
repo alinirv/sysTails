@@ -1,27 +1,56 @@
-import { Link } from 'react-router-dom';
+import { useRef } from 'react';
+import { Link, useSubmit } from 'react-router-dom';
 import Footer from '../../components/footer/Footer';
+import Navibar from '../../components/header/Navibar';
+import api from '../../services/api';
+
+
 
 function Register() {
+    const nameRef = useRef()
+    const emailRef = useRef()
+    const passwoedRef = useRef()
+
+    async function handleSubmit(event) {
+        event.preventDefault()
+        try {
+            await api.post('/signup', {
+                name: nameRef.current.value,
+                email: emailRef.current.value,
+                password: passwoedRef.current.value
+            })
+            alert("Usuário cadastrado com sucesso!")
+
+        } catch (err) {
+           alert(err.response.data)
+        }
+
+    }
+
     return (
         <div>
+            <Navibar />
             <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-slate-900 to-teal-700">
                 <div className="bg-slate-950 rounded-lg shadow-lg p-8 max-w-md w-full">
                     <h2 className="text-2xl font-bold text-center text-white mb-6">Cadastro</h2>
-                    <form className="space-y-4">
+                    <form className="space-y-4" onSubmit={handleSubmit}>
                         <input
+                            ref={nameRef}
                             placeholder="Nome de usuário"
                             type="text"
-                            className="w-full p-3 border border-slate-800 rounded-md focus:outline-none focus:ring-2 focus:none bg-transparent"
+                            className="w-full p-3 border border-slate-800 rounded-md focus:outline-none focus:ring-2 focus:none bg-transparent text-white"
                         />
                         <input
+                            ref={emailRef}
                             placeholder="Email"
                             type="email"
-                            className="w-full p-3 border border-slate-800 rounded-md focus:outline-none focus:ring-2 focus:none bg-transparent"
+                            className="w-full p-3 border border-slate-800 rounded-md focus:outline-none focus:ring-2 focus:none bg-transparent text-white"
                         />
                         <input
+                            ref={passwoedRef}
                             placeholder="Senha"
                             type="password"
-                            className="w-full p-3 border border-slate-800 rounded-md focus:outline-none focus:ring-2 focus:none bg-transparent"
+                            className="w-full p-3 border border-slate-800 rounded-md focus:outline-none focus:ring-2 focus:none bg-transparent text-white"
                         />
                         <button
                             type="submit"
@@ -38,7 +67,7 @@ function Register() {
                     </p>
                 </div>
             </div>
-            <Footer/>
+            <Footer />
         </div>
     );
 }
