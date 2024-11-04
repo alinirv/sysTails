@@ -46,7 +46,7 @@ const Navibar = () => {
                             <li data-twe-nav-item-ref>
                                 <Link
                                     to="/sobre"
-                                    className="text-teal-300 transition duration-200 hover:text-teal-500 focus:text-teal-500"
+                                    className="text-white transition duration-200 hover:text-teal-500 focus:text-teal-500"
                                     aria-current="page"
                                     data-twe-nav-link-ref
                                 >
@@ -58,7 +58,7 @@ const Navibar = () => {
                                     href="https://www.catarse.me/users/1892319"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="text-teal-300 transition duration-200 hover:text-teal-500 focus:text-teal-500"
+                                    className="text-white transition duration-200 hover:text-teal-500 focus:text-teal-500"
                                     aria-current="page"
                                     data-twe-nav-link-ref
                                 >
@@ -68,7 +68,7 @@ const Navibar = () => {
                             <li data-twe-nav-item-ref>
                                 <Link
                                     to="/campanhas"
-                                    className="text-teal-300 transition duration-200 hover:text-teal-500 focus:text-teal-500"
+                                    className="text-white transition duration-200 hover:text-teal-500 focus:text-teal-500"
                                     aria-current="page"
                                     data-twe-nav-link-ref
                                 >
@@ -78,11 +78,11 @@ const Navibar = () => {
                             <li data-twe-nav-item-ref>
                                 <Link
                                     to="/sheets"
-                                    className="text-teal-300 transition duration-200 hover:text-teal-500 focus:text-teal-500"
+                                    className="text-white transition duration-200 hover:text-teal-500 focus:text-teal-500"
                                     aria-current="page"
                                     data-twe-nav-link-ref
                                 >
-                                    Fichas
+                                    Aventureiros
                                 </Link>
                             </li>
 
@@ -94,7 +94,7 @@ const Navibar = () => {
                             type="button"
                             data-twe-ripple-init
                             data-twe-ripple-color="light"
-                            className="me-3 inline-block rounded px-3 py-2 text-xs font-medium uppercase leading-normal text-teal-300 hover:text-teal-400 focus:text-teal-500"
+                            className="me-3 inline-block rounded px-3 py-2 text-xs font-medium uppercase leading-normal text-white hover:text-teal-400 focus:text-teal-500"
                             onClick={isLoggedIn ? handleLogout : handleLoginRedirect}
                         >
                             {isLoggedIn ? 'Sair' : 'Entrar'}
