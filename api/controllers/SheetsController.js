@@ -6,78 +6,60 @@ const prisma = new PrismaClient();
 class SheetsController {
 
   async createSheet(req, res) {
-    const { name, pda, character, equipment, inventory } = req.body;
-    // Verificar se o email já existe
-    const existingSheetsName = await prisma.sheet.findFirst({
-      where: {
-        name: name,
-        userId: req.userId,
-      },
-    });
+    const { pda, character, equipment, parameters, combat, knowledge, inventory } = req.body;
+    const userId = req.userId;
+    const userName = req.userName;
 
-    if (existingSheetsName) {
-      return res.status(400).json('Esse nome já existe. Por favor escolha outro!');
-
-    }
     try {
-      const sheet = new Sheet(name, parseInt(pda), character, equipment, inventory);
+      const sheet = new Sheet(parseInt(pda), character, equipment, parameters, combat, knowledge, inventory);
+
       const newSheet = await prisma.sheet.create({
         data: {
-          name: sheet.name,
           pda: sheet.pda,
+          character: sheet.character,
+          equipment: sheet.equipment,
+          parameters: sheet.parameters,
+          combat: sheet.combat,
+          knowledge: sheet.knowledge,
+          inventory: sheet.inventory,
           pointsLife: sheet.pointsLife,
           pointsEnergy: sheet.pointsEnergy,
           movement: sheet.movement,
           block: sheet.block,
-          equipment: sheet.equipment,
-          inventory: sheet.inventory,
-          userId: req.userId,
-          characterId: sheet.characterId
-        },
+          player: userName,
+          userId: userId
+          
+        }
       });
+
       return res.status(201).json(newSheet);
     } catch (error) {
-      return res.status(500).json('Erro ao criar ficha');
+      console.error(error);
+      return res.status(500).json('Erro ao criar ficha.');
     }
   };
 
+
   async getSheet(req, res) {
-    const { name } = req.params;
+    const { id } = req.params;
     const userId = req.userId;
-    const userName= req.userName;
+    const userName = req.userName;
     try {
       const sheet = await prisma.sheet.findFirst({
         where: {
-          name: name,
+          id: id,
           userId: userId,
         },
       });
 
       if (!sheet) {
-        return res.status(400).json('Ficha não encontrada, verifique o nome da ficha!');
+        return res.status(400).json('Ficha não encontrada!');
 
       }
-      const character = await prisma.character.findUnique({
-        where: {
-          id: sheet.characterId,
-        },
-      });
-  
-      if (!character) {
-        return res.status(400).json('Personagem associado à ficha não encontrado!');
-      }
-  
-      // Combinar os dados da ficha e do personagem
-      const completeSheet = {
-        ...sheet,
-        character,
-        player: userName
-      };
-  
-      res.status(200).json(completeSheet);
+      return res.status(200).json(sheet);
     } catch (error) {
       console.error(error);
-      res.status(500).json('An error occurred while fetching the sheet.');
+      res.status(500).json(' Ocorreu um erro ao obter a ficha.');
       throw error;
     }
   };
@@ -92,76 +74,56 @@ class SheetsController {
       });
 
       if (sheets.length === 0) {
-        return res.status(404).json('No sheets found for this user.');
+        return res.status(404).json(' Não foram encontradas fichas para este usuário.');
       }
       res.status(200).json(sheets);
 
     } catch (error) {
       console.error(error);
-      res.status(500).json('An error occurred while fetching sheets.');
+      res.status(500).json(' Ocorreu um erro ao obter fichas.');
     }
   };
 
   async deleteSheet(req, res) {
-    const { name } = req.params;
+    const { id } = req.params;
     const userId = req.userId;
     try {
       const sheet = await prisma.sheet.findFirst({
         where: {
-          name: name,
-          userId: userId,
+          id: id,
         },
       });
-      if (sheet) {
-        await prisma.sheet.delete({
-          where: {
-            id: sheet.id
-          }
-        });
-        return res.status(200).json('sheet deleted successfully.' );
-      } else {
-        return res.status(404).json('sheet not found.' );
-      }
+      return res.status(200).json('Ficha deletada com sucesso.');
+
     } catch (error) {
       console.error(error);
-      res.status(500).json('An error occurred while updating the sheet parameter.');
+      res.status(500).json('Ocorreu um erro ao deletar a ficha.');
     }
   };
 
   async updateSheet(req, res) {
-    const { name } = req.params;
+    const { id } = req.params;
     const userId = req.userId;
     const { pda, pointsLife, pointsEnergy, movement, block, equipment, inventory } = req.body;
 
     try {
-      const sheet = await prisma.sheet.findFirst({
-        where: {
-          name: name,
-          userId: userId,
+      const updatedSheet = await prisma.sheet.update({
+        where: { id: id, userId: userId },
+        data: {
+          pda: pda !== undefined ? pda : pda,
+          pointsLife: pointsLife !== undefined ? pointsLife : pointsLife,
+          pointsEnergy: pointsEnergy !== undefined ? pointsEnergy : pointsEnergy,
+          movement: movement !== undefined ? movement : movement,
+          block: block !== undefined ? block : block,
+          equipment: equipment ? { ...equipment, ...equipment } : equipment,
+          inventory: inventory ? { ...inventory, ...inventory } : inventory,
         },
       });
-
-      if (sheet) {
-        const updatedSheet = await prisma.sheet.update({
-          where: { id: sheet.id, userId: userId },
-          data: {
-            pda: pda !== undefined ? pda : sheet.pda,
-            pointsLife: pointsLife !== undefined ? pointsLife : sheet.pointsLife,
-            pointsEnergy: pointsEnergy !== undefined ? pointsEnergy : sheet.pointsEnergy,
-            movement: movement !== undefined ? movement : sheet.movement,
-            block: block !== undefined ? block : sheet.block,
-            equipment: equipment ? { ...sheet.equipment, ...equipment } : sheet.equipment,
-            inventory: inventory ? { ...sheet.inventory, ...inventory } : sheet.inventory,
-          },
-        });
-        return res.status(200).json(updatedSheet);
-      } else {
-        return res.status(404).json('sheet not found.');
-      }
+      return res.status(200).json(updatedSheet);
 
     } catch (error) {
       console.error(error);
-      res.status(500).json('An error occurred while updating the sheet parameter.');
+      res.status(500).json(' Ocorreu um erro ao atualizar os parâmetros da ficha.');
     }
   };
 

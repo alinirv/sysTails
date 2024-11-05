@@ -1,14 +1,12 @@
 import express from "express";
 import { PrismaClient } from '@prisma/client';
 import DiceController from '../controllers/DiceController.js';
-import CharacterController from '../controllers/CharacterController.js'
 import SheetsController from "../controllers/SheetsController.js";
 import CampaingController from "../controllers/CampaingController.js";
 
 const router = express.Router();
 const prisma = new PrismaClient();
 const diceController = new DiceController();
-const  characterController = new CharacterController();
 const sheetsController = new SheetsController();
 const campaingController = new CampaingController
 
@@ -26,18 +24,6 @@ router.get('/home', async (req, res) => {
 router.get('/roll', diceController.roll);
 
 router.get('/roll/modified/:modifiers', diceController.rollModified);
-
-router.post('/character',characterController.createCharacter);
-
-router.get('/character/find/:name',characterController.getCharacter);
-
-router.get('/character/findAll',characterController.getAllCharacters);
-
-router.put('/characters/update/parameter/:name', characterController.updateCharacterParameter);
-
-router.put('/characters/update/knowledge/:name', characterController.updateCharacterKnowledge);
-
-router.delete('/characters/delete/:name', characterController.deleteCharacter);
 
 router.post('/sheet',  sheetsController.createSheet);
 

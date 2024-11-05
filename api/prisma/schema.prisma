@@ -18,38 +18,27 @@ model User {
   email       String   @unique
   name        String
   password    String
-  characters  Character[]
   sheets      Sheet[]
   campaigns   Campaign[] 
 }
 
-model Character {
-  id              String   @id @default(auto()) @map("_id") @db.ObjectId
-  name            String 
-  legacy          String
-  legacyAbilities Json
-  parameters      Json
-  combat          Json
-  knowledge       Json
-  userId          String   @db.ObjectId  // Chave estrangeira para o usuário
-  user            User     @relation(fields: [userId], references: [id])
-  sheets          Sheet[]  
-}
 
 model Sheet {
   id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  name           String 
   pda            Int
+  character      Json
+  equipment      Json
+  parameters     Json
+  combat         Json
+  knowledge      Json
+  inventory      Json
   pointsLife     Int
   pointsEnergy   Int
   movement       Int
   block          Int
-  equipment      Json
-  inventory      Json
+  player         String
   userId         String   @db.ObjectId
   user           User     @relation(fields: [userId], references: [id])
-  characterId    String   @db.ObjectId  // Chave estrangeira para o personagem
-  character      Character @relation(fields: [characterId], references: [id])
   createdAt      DateTime @default(now())
   campaigns      CampaignSheets[] 
 }

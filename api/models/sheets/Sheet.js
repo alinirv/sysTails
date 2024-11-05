@@ -1,31 +1,69 @@
+import AbilitieslegacyMap from './../utils/legacyAbilitiesMap.js';
 
 class Sheet {
-    constructor(name,pda, character, equipment = {}, inventory={}) {
-        this.name = name;
+    constructor(pda, character = {}, equipment = {}, parameters = {}, combat = {}, knowledge = {}, inventory = {}) {
         this.pda = pda;
-        this.character = character;
+        this.character = {
+            nome: character.name,
+            legado: character.legacy,
+            habilidadesLegado: this.getLegacyAbilities(character.legacy),
+        };
         this.equipment = {
-            armament: {
-                damage: 0,
-                range: 0,
-                property: '',
-                propMystic: ''
+            armamento: {
+                dano: 0,
+                alcance: 0,
+                propriedade: '',
+                propMistica: ''
             },
-            armor: {
-                block: 0,
-                disable: false, //altera para true dependendo da armadura
-                propMystic: ''
+            armadura: {
+                bloqueio: 0,
+                inaptidao: false,
+                propMistica: ''
             },
-            shield: {
-                block: 0,
-                disable: false,
-                propMystic: ''
+            escudo: {
+                bloqueio: 0,
+                inaptidao: false,
+                propMistica: ''
             },
             ...equipment
         };
+        this.parameters = {
+            agilidade: 0,
+            brutalidade: 0,
+            canalizacao: 0,
+            destreza: 0,
+            espirito: 0,
+            precisao: 0,
+            vigor: 0,
+            arcanismo: 0,
+            ...parameters
+        };
+        this.combat = {
+            habilidadeCombate1: '',
+            habilidadeCombate2: '',
+            ...combat
+        };
+        this.knowledge = {
+            carisma: 0,
+            conhecimentoMistico: 0,
+            exploracao: 0,
+            furtividade: 0,
+            historia: 0,
+            intimidacao: 0,
+            intuicao: 0,
+            medicina: 0,
+            percepcao: 0,
+            performance: 0,
+            religiao: 0,
+            sobrevivencia: 0,
+            tecnologia: 0,
+            vontade: 0,
+            maestria: '',
+            ...knowledge
+        };
         this.inventory = {
             itens: [],
-            mp: 120, // modificar valaro func soma ou subtrai
+            mp: 120,
             mo: 0,
             mi: 0,
             ...inventory
@@ -34,29 +72,35 @@ class Sheet {
         this.pointsEnergy = this.calculatePointsEnergy();
         this.movement = this.calculateMovement();
         this.block = this.calculateBlock();
-        this.characterId = character.id;
     }
-    calculateLifePoints() { // corrigir para somar apenas o novo valor do pda preseva o ja existente
-        let  pointsLife = 30
-        let contLife = 0
+
+    getLegacyAbilities(legacy) {
+        const abilities = AbilitieslegacyMap[legacy] || {};
+        return Object.values(abilities);
+    }
+
+    calculateLifePoints() {
+        let pointsLife = 30;
+        let contLife = 0;
         for (let i = 1; i <= this.pda; i++) {
-           contLife += 3 + this.character.parameters.vigor;
+            contLife += 3 + (this.parameters.vigor || 0);
         }
         return pointsLife + contLife;
     }
 
-    calculatePointsEnergy() { 
+    calculatePointsEnergy() {
         return 4 + this.pda;
     }
 
     calculateMovement() {
-        return 6 + Math.floor(this.character.parameters.agility / 2); // aredonda para baixo
+        return 6 + Math.floor((this.parameters.agilidade || 0) / 2);
     }
 
     calculateBlock() {
-        return this.equipment.armor.block + this.equipment.shield.block || 0;
+        return (this.equipment.armadura.bloqueio || 0) + (this.equipment.escudo.bloqueio || 0);
     }
 }
 
 export default Sheet;
+
 
