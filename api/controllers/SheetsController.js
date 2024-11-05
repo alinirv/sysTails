@@ -28,7 +28,7 @@ class SheetsController {
           block: sheet.block,
           player: userName,
           userId: userId
-          
+
         }
       });
 
@@ -42,18 +42,15 @@ class SheetsController {
 
   async getSheet(req, res) {
     const { id } = req.params;
-    const userId = req.userId;
-    const userName = req.userName;
     try {
       const sheet = await prisma.sheet.findFirst({
         where: {
           id: id,
-          userId: userId,
         },
       });
 
       if (!sheet) {
-        return res.status(400).json('Ficha não encontrada!');
+        return res.status(404).json('Ficha não encontrada!');
 
       }
       return res.status(200).json(sheet);
@@ -86,9 +83,8 @@ class SheetsController {
 
   async deleteSheet(req, res) {
     const { id } = req.params;
-    const userId = req.userId;
     try {
-      const sheet = await prisma.sheet.findFirst({
+      await prisma.sheet.findFirst({
         where: {
           id: id,
         },

@@ -27,7 +27,7 @@ router.get('/roll/modified/:modifiers', diceController.rollModified);
 
 router.post('/sheet',  sheetsController.createSheet);
 
-router.get('/sheet/find/:name',sheetsController.getSheet);
+router.get('/sheet/find/:id',sheetsController.getSheet);
 
 router.get('/sheet/findAll',sheetsController.getAllSheets);
 
