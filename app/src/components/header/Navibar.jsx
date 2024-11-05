@@ -43,6 +43,16 @@ const Navibar = () => {
 
                     <div className="flex-grow flex justify-center items-center">
                         <ul className="list-style-none flex space-x-6">
+                        <li data-twe-nav-item-ref>
+                                <Link
+                                    to="/dashboard"
+                                    className="text-white transition duration-200 hover:text-teal-500 focus:text-teal-500"
+                                    aria-current="page"
+                                    data-twe-nav-link-ref
+                                >
+                                    Painel
+                                </Link>
+                            </li>
                             <li data-twe-nav-item-ref>
                                 <Link
                                     to="/sobre"
@@ -65,27 +75,7 @@ const Navibar = () => {
                                     Gaia: O Prelúdio
                                 </a>
                             </li>
-                            <li data-twe-nav-item-ref>
-                                <Link
-                                    to="/campanhas"
-                                    className="text-white transition duration-200 hover:text-teal-500 focus:text-teal-500"
-                                    aria-current="page"
-                                    data-twe-nav-link-ref
-                                >
-                                    Campanhas
-                                </Link>
-                            </li>
-                            <li data-twe-nav-item-ref>
-                                <Link
-                                    to="/sheets"
-                                    className="text-white transition duration-200 hover:text-teal-500 focus:text-teal-500"
-                                    aria-current="page"
-                                    data-twe-nav-link-ref
-                                >
-                                    Aventureiros
-                                </Link>
-                            </li>
-
+                            
                         </ul>
                     </div>
 
