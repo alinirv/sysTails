@@ -46,10 +46,10 @@ const SheetsDashboard = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {sheets.map((sheet) => (
                     <div key={sheet.id} className="bg-slate-950 rounded-lg shadow-md p-6">
-                        <h2 className="text-xl font-semibold text-white mb-2">{sheet.name}</h2>
+                        <h2 className="text-xl font-semibold text-white mb-2">{sheet.character.nome}</h2>
                         <p className="text-teal-500 mb-4">PDA: {sheet.pda}</p>
                         <div className="flex justify-between items-center">
-                            <Link to={`/sheetPage/${sheet.name}`} className="text-teal-500 hover:text-teal-600">
+                            <Link to={`/sheetPage/${sheet.id}`} className="text-teal-500 hover:text-teal-600">
                                 Ver Detalhes
                             </Link>
                             <button
