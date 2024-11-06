@@ -1,7 +1,8 @@
 import AbilitieslegacyMap from './../utils/legacyAbilitiesMap.js';
 
 class Sheet {
-    constructor(pda, character = {}, equipment = {}, parameters = {}, combat = {}, knowledge = {}, inventory = {}) {
+    constructor(pda, character = {}, equipment = {}, parameters = {}, combat = {}, knowledge = {}, inventory = {}, skill = {}, pointsLife) {
+
         this.pda = pda;
         this.character = {
             nome: character.name,
@@ -25,7 +26,7 @@ class Sheet {
                 inaptidao: false,
                 propMistica: ''
             },
-            ...equipment
+            ...equipment  // Permite sobrescrever os valores padrão com os fornecidos.
         };
         this.parameters = {
             agilidade: 0,
@@ -68,17 +69,20 @@ class Sheet {
             mi: 0,
             ...inventory
         };
-        this.pointsLife = this.calculateLifePoints();
+        this.skill =[...skill];
+        this.pointsLifeMax = this.calculateLifePoints();
+        this.pointsLife = pointsLife,
         this.pointsEnergy = this.calculatePointsEnergy();
         this.movement = this.calculateMovement();
         this.block = this.calculateBlock();
     }
 
+    // Método para obter as habilidades do legado com base no legado fornecido.
     getLegacyAbilities(legacy) {
         const abilities = AbilitieslegacyMap[legacy] || {};
         return Object.values(abilities);
     }
-
+    // Método para calcular os pontos maximo  de vida do personagem.
     calculateLifePoints() {
         let pointsLife = 30;
         let contLife = 0;
@@ -87,15 +91,15 @@ class Sheet {
         }
         return pointsLife + contLife;
     }
-
+    // Método para calcular os pontos de energia do personagem.
     calculatePointsEnergy() {
         return 4 + this.pda;
     }
-
+    // Método para calcular o movimento do personagem.
     calculateMovement() {
         return 6 + Math.floor((this.parameters.agilidade || 0) / 2);
     }
-
+    // Método para calcular o bloqueio do personagem.
     calculateBlock() {
         return (this.equipment.armadura.bloqueio || 0) + (this.equipment.escudo.bloqueio || 0);
     }

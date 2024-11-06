@@ -32,6 +32,8 @@ model Sheet {
   combat         Json
   knowledge      Json
   inventory      Json
+  skill          Json[]
+  pointsLifeMax  Int
   pointsLife     Int
   pointsEnergy   Int
   movement       Int
