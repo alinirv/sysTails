@@ -43,7 +43,7 @@ router.post('/signup', async (req, res) => {
 
         const userID = user.id
 
-        return res.status(200).json({token,userID });
+        return res.status(200).json(token);
 
     } catch (err) {
         res.status(500).json('Error no servidor, tente mais tarde!');
@@ -78,7 +78,7 @@ router.post('/login', async (req, res) => {
         const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1d' })
         const userID = user.id
 
-        return res.status(200).json({token,userID });
+        return res.status(200).json(token);
 
 
     } catch (err) {
