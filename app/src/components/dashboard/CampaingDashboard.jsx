@@ -3,37 +3,37 @@ import { Link } from 'react-router-dom';
 import api from '../../services/api';
 
 const CampaingDashboard = () => {
-    const [sheets, setSheets] = useState([]);
+    const [campaing, setcampaing] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        fetchSheets();
+        fetchcampaing();
     }, [isLoading]);
 
-    async function fetchSheets() {
+    async function fetchcampaing() {
         if (!isLoading) return;
         try {
-            const response = await api.get('/sheet/findAll', {
+            const response = await api.get('/campaing/find', {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
-            setSheets(response.data);
+            setcampaing(response.data);
         } catch (err) {
             alert(err.response?.data || 'Erro desconhecido');
         } finally {
-            setIsLoading(false);
+            setIsLoading(true);
         }
     };
 
-    const handleDeleteSheet = async (sheetName) => {
-        if (window.confirm(`Tem certeza que deseja excluir a ficha "${sheetName}"?`)) {
+    const handleDeletecampaing = async (campaingName, campaingToken) => {
+        if (window.confirm(`Tem certeza que deseja excluir a campanha "${campaingName}"?`)) {
             try {
-                await api.delete(`/sheet/delete/${sheetName}`, {
+                await api.delete(`/campaing/delete/${campaingToken}`, {
                     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
                 });
-                setSheets(sheets.filter(sheet => sheet.name !== sheetName));
+                setcampaing(campaing.filter(campaing => campaing.name !== campaingName));
             } catch (err) {
-                setError('Falha ao excluir a ficha. Por favor, tente novamente.');
-                console.error('Erro ao excluir ficha:', err);
+                setError('Falha ao excluir a campanha. Por favor, tente novamente.');
+                console.error('Erro ao excluir campanha:', err);
             }
         }
     };
@@ -42,16 +42,17 @@ const CampaingDashboard = () => {
         <div className=" text-white max-w-screen-lg w-full px-4 py-6 rounded-lg">
             <h1 className="text-3xl font-bold text-white mb-6">Campanhas</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {sheets.map((sheet) => (
-                    <div key={sheet.id} className="bg-slate-950 rounded-lg shadow-md p-6">
-                        <h2 className="text-xl font-semibold text-white mb-2">{sheet.name}</h2>
-                        <p className="text-teal-500 mb-4">PDA: {sheet.pda}</p>
+                {campaing.map((campaing) => (
+                    <div key={campaing.id} className="bg-slate-950 rounded-lg shadow-md p-6">
+                        <h2 className="text-xl font-semibold text-white mb-2">{campaing.name}</h2>
+                        <p className="text-teal-500 mb-4">Status: {campaing.status}</p>
+                        <p className="text-teal-500 mb-4">Token: {campaing.token}</p>
                         <div className="flex justify-between items-center">
-                            <Link to={`/sheetPage/${sheet.name}`} className="text-teal-500 hover:text-teal-600">
+                            <Link to={'/'} className="text-teal-500 hover:text-teal-600">
                                 Ver Detalhes
                             </Link>
                             <button
-                                onClick={() => handleDeleteSheet(sheet.name)}
+                                onClick={() => handleDeletecampaing(campaing.name,campaing.token)}
                                 className="text-red-500 hover:text-red-600"
                             >
                                 Excluir
