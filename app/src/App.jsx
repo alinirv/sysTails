@@ -17,6 +17,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<UserDashboard />} />
+          <Route path="/sheetPage/:idParam" element={<SheetPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
