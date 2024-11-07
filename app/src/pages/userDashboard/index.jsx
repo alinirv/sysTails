@@ -11,26 +11,26 @@ function UserDashboard() {
             <Navibar />
             <header className="bg-slate-950 shadow">
                 <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                    <h1 className="text-3xl font-bold tracking-tight text-white">Dashboard</h1>
+                    <h1 className="text-3xl font-bold tracking-tight text-white">Painel do Aventureiro</h1>
                 </div>
             </header>
             <main>
                 <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">{/* Your content */}
                     <div className="flex justify-center space-x-6 mb-10">
-                        <Link to="/create-sheet" className="bg-slate-950 text-teal-500 py-2 px-4 rounded-md hover:bg-teal-600 transition duration-300 inline-block">
+                        <Link to="/create-sheet" className="mt-6 bg-teal-600 hover:bg-teal-500 text-white font-bold py-2 px-4 rounded">
                             Criar Nova Ficha
                         </Link>
-                        <Link to="/create-sheet" className="bg-slate-950 text-teal-500 py-2 px-4 rounded-md hover:bg-teal-600 transition duration-300 inline-block">
+                        <Link to="/create-sheet" className="mt-6 bg-teal-600 hover:bg-teal-500 text-white font-bold py-2 px-4 rounded">
                             Criar Nova Campanha
                         </Link>
-                        <Link to="/create-sheet" className="bg-slate-950 text-teal-500 py-2 px-4 rounded-md hover:bg-teal-600 transition duration-300 inline-block">
+                        <Link to="/create-sheet" className="mt-6 bg-teal-600 hover:bg-teal-500 text-white font-bold py-2 px-4 rounded">
                             Ingressar em uma Campanha
                         </Link>
                     </div>
-                    <div >
+                    <div className="bg-slate-800 p-6 rounded-lg mb-6">
                         <SheetsDashboard />
                     </div>
-                    <div >
+                    <div className="bg-slate-800 p-6 rounded-lg mb-6">
                         <CampaingDashboard />
                     </div>
 
