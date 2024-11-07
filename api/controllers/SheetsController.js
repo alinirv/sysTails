@@ -46,8 +46,7 @@ class SheetsController {
 
  // Método para obter uma ficha específica pelo ID
   async getSheet(req, res) {
-    const id  = req.params;
-
+    const id  = req.params.id;
     try {
       // Busca a ficha no banco de dados
       const sheet = await prisma.sheet.findFirst({
@@ -86,7 +85,6 @@ class SheetsController {
 
     } catch (error) {
       // Retorna erro caso algo dê errado
-      console.error(error);
       res.status(500).json(' Ocorreu um erro ao obter fichas.');
     }
   };
@@ -102,7 +100,6 @@ class SheetsController {
       return res.status(200).json('Ficha deletada com sucesso.');
 
     } catch (error) {
-      console.error(error);
       res.status(500).json('Ocorreu um erro ao deletar a ficha.');
     }
   };
@@ -128,7 +125,6 @@ class SheetsController {
       return res.status(200).json(updatedSheet);
 
     } catch (error) {
-      console.error(error);
       res.status(500).json(' Ocorreu um erro ao atualizar os parâmetros da ficha.');
     }
   };
