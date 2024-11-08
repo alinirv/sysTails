@@ -11,6 +11,8 @@ import CombatPathSkills from '../../components/sheet/CombatAbilityList';
 
 function SheetPage() {
   const [sheet, setSheet] = useState(null);
+  const [saveTimeout, setSaveTimeout] = useState(null);
+  const [saveStatus, setSaveStatus] = useState('saved');
   const [temporaryLife, setTemporaryLife] = useState(0);
   const [temporaryEnergy, setTemporaryEnergy] = useState(0);
   const { idParam } = useParams();
@@ -21,7 +23,6 @@ function SheetPage() {
         const { data } = await api.get(`/sheet/find/${idParam}`, {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });
-        console.log(data);
         setSheet(data);
       } catch (error) {
         console.error('Erro ao carregar ficha:', error);
@@ -31,145 +32,220 @@ function SheetPage() {
     fetchSheet();
   }, [idParam]);
 
-  // calcula os pontos de vida e energia com base em parâmetros fornecidos
-  const calculatePoints = (pda, vigor, pointsLife, pointsEnergy) => {
-    const lifePoints = pointsLife + 3 + vigor;
-    const energyPoints = pointsEnergy + 1;
+  const updateSheet = async (data) => {
+    console.log(sheet.id)
+    try {
+      await api.put(`/sheet/update/${sheet.id}`, data, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const autoSave = (updatedSheet) => {
+    if (saveTimeout) clearTimeout(saveTimeout);
+
+    setSaveStatus('saving');
+    const timeout = setTimeout(async () => {
+      try {
+        await updateSheet(updatedSheet);
+        setSaveStatus('saved');
+      } catch (error) {
+        setSaveStatus('error');
+        console.error('Erro ao salvar:', error);
+      }
+    }, 2000);
+
+    setSaveTimeout(timeout);
+  };
+
+  const calculatePoints = (pda, vigor, pointsLifeMax, pointsEnergyMax) => {
+    const lifePoints = pointsLifeMax + 3 + vigor;
+    const energyPoints = pointsEnergyMax + 1;
     return { lifePoints, energyPoints };
   };
-  // trata a mudança de um parâmetro, atualizando o estado da ficha
+
   const handleParameterChange = (param, value) => {
     setSheet((prevSheet) => {
-      const newParameters = {
-        ...prevSheet.parameters,
-        [param]: Number(value),
+      const newSheet = {
+        ...prevSheet,
+        parameters: {
+          ...prevSheet.parameters,
+          [param]: Number(value),
+        }
       };
 
       const { lifePoints, energyPoints } = calculatePoints(
-        prevSheet.pda,
-        param === 'vigor' ? Number(value) : prevSheet.parameters.vigor,
-        param === 'pointsLifeMax' ? Number(value) : prevSheet.pointsLifeMax,
-        param === 'pointsEnergy' ? Number(value) : prevSheet.pointsEnergy,
-
+        newSheet.pda,
+        param === 'vigor' ? Number(value) : newSheet.parameters.vigor,
+        param === 'pointsLifeMax' ? Number(value) : newSheet.pointsLifeMax,
+        param === 'pointsEnergy' ? Number(value) : newSheet.pointsEnergy,
       );
 
-      return {
-        ...prevSheet,
-        parameters: newParameters,
+      const finalSheet = {
+        ...newSheet,
         pointsLifeMax: lifePoints,
         pointsEnergy: energyPoints,
       };
-    });
 
+      autoSave(finalSheet);
+      return finalSheet;
+    });
   };
-  // trata a mudança de um conhecimento, atualizando o estado da ficha
+
   const handleKnowledgeChange = (key, value) => {
-    setSheet((prevSheet) => ({
-      ...prevSheet,
-      knowledge: {
-        ...prevSheet.knowledge,
-        [key]: value,
-      },
-    }));
-  };
-  // trata a mudança de um equipamento, atualizando o estado da ficha
-  const handleEquipmentChange = (type, field, value) => {
-    setSheet((prevSheet) => ({
-      ...prevSheet,
-      equipment: {
-        ...prevSheet.equipment,
-        [type]: {
-          ...prevSheet.equipment[type],
-          [field]: value,
+    setSheet((prevSheet) => {
+      const newSheet = {
+        ...prevSheet,
+        knowledge: {
+          ...prevSheet.knowledge,
+          [key]: value,
         },
-      },
-    }));
+      };
+      autoSave(newSheet);
+      return newSheet;
+    });
   };
-  // trata a mudança dp inventario, atualizando o estado da ficha
+
+  const handleEquipmentChange = (type, field, value) => {
+    setSheet((prevSheet) => {
+      const newSheet = {
+        ...prevSheet,
+        equipment: {
+          ...prevSheet.equipment,
+          [type]: {
+            ...prevSheet.equipment[type],
+            [field]: value,
+          },
+        },
+      };
+      autoSave(newSheet);
+      return newSheet;
+    });
+  };
+
   const handleInventoryChange = (field, value) => {
-    setSheet(prevSheet => ({
-      ...prevSheet,
-      inventory: {
-        ...prevSheet.inventory,
-        [field]: value
-      }
-    }));
+    setSheet(prevSheet => {
+      const newSheet = {
+        ...prevSheet,
+        inventory: {
+          ...prevSheet.inventory,
+          [field]: value
+        }
+      };
+      autoSave(newSheet);
+      return newSheet;
+    });
   };
-  // adiciona  uma nova habilidade de combate
+
   const handleAddSkill = async (newSkill) => {
-    try {
-      setSheet(prevSheet => ({
+    setSheet(prevSheet => {
+      const newSheet = {
         ...prevSheet,
         skill: [...prevSheet.skill, newSkill]
-      }));
-
-      // Atualizar no backend
-      // await api.put(`/sheet/update/${idParam}`, {
-      //   skill: [...sheet.skill, newSkill]
-      // }, {
-      //   headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-      // });
-    } catch (error) {
-      console.error('Erro ao adicionar habilidade:', error);
-    }
-  };
-  // trata a mudança de habilidade de combate, atualizando o estado da ficha
-  const handleSkillChange = (index, field, value) => {
-    setSkills((prevSkills) => {
-      const updatedSkills = [...prevSkills];
-      updatedSkills[index] = { ...updatedSkills[index], [field]: value };
-      return updatedSkills;
+      };
+      autoSave(newSheet);
+      return newSheet;
     });
   };
-  // trata a mudança do PDA, atualizando os pontos máximo de vida e energia
+
+  const handleSkillChange = (index, field, value) => {
+    setSheet(prevSheet => {
+      const updatedSkills = [...prevSheet.skill];
+      updatedSkills[index] = { ...updatedSkills[index], [field]: value };
+      const newSheet = {
+        ...prevSheet,
+        skill: updatedSkills
+      };
+      autoSave(newSheet);
+      return newSheet;
+    });
+  };
+
   const handlePdaChange = (value) => {
     const newPda = Number(value);
-    // Verifica se o novo PDA é maior ou igual ao atual
     setSheet((prevSheet) => {
       if (newPda >= prevSheet.pda) {
-        const { lifePoints, energyPoints } = calculatePoints(newPda, prevSheet.parameters.vigor, prevSheet.pointsLifeMax, prevSheet.pointsEnergy);
+        const { lifePoints, energyPoints } = calculatePoints(
+          newPda,
+          prevSheet.parameters.vigor,
+          prevSheet.pointsLifeMax,
+          prevSheet.pointsEnergyMax
+        );
 
-        return {
+        const newSheet = {
           ...prevSheet,
           pda: newPda,
           pointsLifeMax: lifePoints,
-          pointsEnergy: energyPoints,
+          pointsEnergyMax: energyPoints,
         };
+        autoSave(newSheet);
+        return newSheet;
       }
-      // Se o novo PDA for menor, não faz nada
       return prevSheet;
     });
   };
-  // atualiza os pontos de vida
+
   const handleLifePointsChange = (value, type) => {
     const numValue = Number(value);
     if (type === 'Atual') {
-      setSheet(prevSheet => ({
-        ...prevSheet,
-        pointsLife: Math.min(Math.max(0, numValue), prevSheet.pointsLifeMax)
-      }));
+      setSheet(prevSheet => {
+        const newSheet = {
+          ...prevSheet,
+          pointsLife: Math.min(Math.max(0, numValue), prevSheet.pointsLifeMax)
+        };
+        autoSave(newSheet);
+        return newSheet;
+      });
     } else if (type === 'Temporários') {
       setTemporaryLife(Math.max(0, numValue));
     }
   };
-  //atualiza os pontos de energia
+
   const handleEnergyPointsChange = (value, type) => {
     const numValue = Number(value);
     if (type === 'Atual') {
-      setSheet(prevSheet => ({
-        ...prevSheet,
-        pointsEnergy: Math.min(Math.max(0, numValue), prevSheet.pointsEnergy)
-      }));
+      setSheet(prevSheet => {
+        const newSheet = {
+          ...prevSheet,
+          pointsEnergy: Math.min(Math.max(0, numValue), prevSheet.pointsEnergyMax)
+        };
+        autoSave(newSheet);
+        return newSheet;
+      });
     } else if (type === 'Temporários') {
       setTemporaryEnergy(Math.max(0, numValue));
     }
   };
-  // deleta uma habilidade de combate
+
   const handleDeleteSkill = (index) => {
-    setSheet(prevSheet => ({
-      ...prevSheet,
-      skill: prevSheet.skill.filter((_, i) => i !== index)
-    }));
+    setSheet(prevSheet => {
+      const newSheet = {
+        ...prevSheet,
+        skill: prevSheet.skill.filter((_, i) => i !== index)
+      };
+      autoSave(newSheet);
+      return newSheet;
+    });
+  };
+
+  const renderSaveStatus = () => {
+    return (
+      <div className="fixed bottom-4 right-4 p-2 rounded-lg">
+        {saveStatus === 'saving' && (
+          <span className="text-yellow-500">Salvando...</span>
+        )}
+        {saveStatus === 'saved' && (
+          <span className="text-green-500">Todas as alterações salvas</span>
+        )}
+        {saveStatus === 'error' && (
+          <span className="text-red-500">Erro ao salvar</span>
+        )}
+      </div>
+    );
   };
 
   if (!sheet) return <div>Carregando...</div>;
@@ -179,7 +255,6 @@ function SheetPage() {
       <Navibar />
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-slate-900 to-teal-700 py-10">
         <div className="bg-slate-950 text-white max-w-screen-lg w-full items-center px-4 py-6 rounded-lg">
-          {/* Informações Básicas */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
             {['Jogador', 'Personagem', 'Legado', 'PDA'].map((label) => (
               <div key={label} className="bg-slate-900 p-4 rounded-lg">
@@ -201,14 +276,12 @@ function SheetPage() {
                           sheet.character.legado
                     }
                     readOnly
-
                   />
                 )}
               </div>
             ))}
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            {/* Pontos de Vida */}
             <div className="bg-slate-900 p-4 rounded-lg">
               <h4 className="text-xl font-bold mb-4 text-white">Pontos de Vida</h4>
               <div className="grid grid-cols-3 gap-4">
@@ -232,11 +305,10 @@ function SheetPage() {
                 ))}
               </div>
             </div>
-            {/* Pontos de Energia */}
             <div className="bg-slate-900 p-4 rounded-lg">
               <h4 className="text-xl font-bold mb-4 text-white">Pontos de Energia</h4>
               <div className="grid grid-cols-3 gap-4">
-                {['Máximo ', 'Atual', 'Temporários'].map((label) => (
+                {['Máximo', 'Atual', 'Temporários'].map((label) => (
                   <div key={label} className="space-y-1">
                     <label className="block text-sm font-semibold text-teal-400">
                       {label}
@@ -245,7 +317,7 @@ function SheetPage() {
                       type="number"
                       className="w-full bg-slate-800 border border-slate-700 rounded py-2 px-3 text-white text-center focus:outline-none focus:border-teal-500"
                       value={
-                        label === 'Máximo' ? sheet.pointsEnergy :
+                        label === 'Máximo' ? sheet.pointsEnergyMax :
                           label === 'Atual' ? sheet.pointsEnergy :
                             temporaryEnergy
                       }
@@ -257,13 +329,13 @@ function SheetPage() {
               </div>
             </div>
           </div>
-          {/* Movimento/Bloqueio e Habilidades de Legado */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div className="bg-slate-900 p-4 rounded-lg">
               <h4 className="text-xl font-bold mb-4 text-white">Movimentação e Bloqueio</h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div
+                className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div className="bg-slate-900 p-4 rounded-lg">
-                  <label class="block text-sm font-semibold text-teal-400">Movimento</label>
+                  <label className="block text-sm font-semibold text-teal-400">Movimento</label>
                   <input
                     type='number'
                     className="w-full bg-slate-800 border border-slate-700 rounded py-2 px-3 text-white text-center focus:outline-none focus:border-teal-500"
@@ -271,7 +343,7 @@ function SheetPage() {
                   />
                 </div>
                 <div className="bg-slate-900 p-4 rounded-lg">
-                  <label class="block text-sm font-semibold text-teal-400">Bloqueio</label>
+                  <label className="block text-sm font-semibold text-teal-400">Bloqueio</label>
                   <input
                     type='number'
                     className="w-full bg-slate-800 border border-slate-700 rounded py-2 px-3 text-white text-center focus:outline-none focus:border-teal-500"
@@ -292,26 +364,20 @@ function SheetPage() {
               </div>
             </div>
           </div>
-          {/* Conhecimento e  Parâmetros*/}
           <div className="grid grid-cols-2 gap-4 mb-6">
             <div className="bg-slate-800 p-4 rounded-lg">
-              <SheetKnowledge knowledge={sheet.knowledge} handleKnowledgeChange={handleKnowledgeChange}
-              />
+              <SheetKnowledge knowledge={sheet.knowledge} handleKnowledgeChange={handleKnowledgeChange} />
             </div>
             <div className="bg-slate-800 p-4 rounded-lg">
-              <SheetParameters parameters={sheet.parameters} handleParameterChange={handleParameterChange}
-              />
+              <SheetParameters parameters={sheet.parameters} handleParameterChange={handleParameterChange} />
             </div>
           </div>
-          {/* Equipamento */}
           <div className="bg-slate-800 p-6 rounded-lg mb-6">
             <SheetEquipment equipment={sheet.equipment} handleEquipmentChange={handleEquipmentChange} />
           </div>
-          {/* Inventário */}
-          <div className="bg-slate-800 p-6 rounded-lg mb-6" >
+          <div className="bg-slate-800 p-6 rounded-lg mb-6">
             <SheetInventory inventory={sheet.inventory} handleInventoryChange={handleInventoryChange} />
           </div>
-          {/*Habilidades de Caminho de Combate */}
           <div className="bg-slate-800 p-6 rounded-lg">
             <CombatPathSkills
               skills={sheet.skill}
@@ -322,10 +388,10 @@ function SheetPage() {
           </div>
         </div>
       </div>
+      {renderSaveStatus()}
       <Footer />
     </div>
   );
-
 }
 
 export default SheetPage;
