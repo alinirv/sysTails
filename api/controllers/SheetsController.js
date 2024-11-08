@@ -7,13 +7,13 @@ class SheetsController {
 
   // Método para criar uma nova ficha
   async createSheet(req, res) {
-    const { pda, character, equipment, parameters, combat, knowledge, inventory, skill, pointsLife } = req.body;
+    const { pda, character, equipment, parameters, combat, knowledge, inventory, skill, pointsLife, pointsEnergy } = req.body;
     const userId = req.userId;
     const userName = req.userName;
 
     try {
       // Cria uma nova instância de Sheet com os dados recebidos
-      const sheet = new Sheet(parseInt(pda), character, equipment, parameters, combat, knowledge, inventory,skill,parseInt(pointsLife));
+      const sheet = new Sheet(parseInt(pda), character, equipment, parameters, combat, knowledge, inventory, skill, parseInt(pointsLife), parseInt(pointsEnergy));
 
       // Cria a nova ficha no banco de dados usando Prisma
       const newSheet = await prisma.sheet.create({
@@ -26,8 +26,9 @@ class SheetsController {
           knowledge: sheet.knowledge,
           inventory: sheet.inventory,
           skill: sheet.skill,
-          pointsLifeMax:sheet.pointsLifeMax,
+          pointsLifeMax: sheet.pointsLifeMax,
           pointsLife: sheet.pointsLife,
+          pointsEnergyMax: sheet.pointsEnergyMax,
           pointsEnergy: sheet.pointsEnergy,
           movement: sheet.movement,
           block: sheet.block,
@@ -44,9 +45,9 @@ class SheetsController {
     }
   };
 
- // Método para obter uma ficha específica pelo ID
+  // Método para obter uma ficha específica pelo ID
   async getSheet(req, res) {
-    const id  = req.params.id;
+    const id = req.params.id;
     try {
       // Busca a ficha no banco de dados
       const sheet = await prisma.sheet.findFirst({
@@ -88,7 +89,7 @@ class SheetsController {
       res.status(500).json(' Ocorreu um erro ao obter fichas.');
     }
   };
- //revisar
+  //revisar
   async deleteSheet(req, res) {
     const { id } = req.params;
     try {
@@ -103,29 +104,28 @@ class SheetsController {
       res.status(500).json('Ocorreu um erro ao deletar a ficha.');
     }
   };
-  //revisar
+  
+  // atualiza dados da ficha
   async updateSheet(req, res) {
-    const { id } = req.params;
+    const id = req.params.id;
     const userId = req.userId;
-    const { pda, pointsLife, pointsEnergy, movement, block, equipment, inventory } = req.body;
-
+    const updateData = req.body; 
+    //deleta o id da finha para evitar problemas
+    delete updateData.id;
     try {
       const updatedSheet = await prisma.sheet.update({
-        where: { id: id, userId: userId },
+        where: {
+          id: id,
+          userId: userId 
+        },
         data: {
-          pda: pda !== undefined ? pda : pda,
-          pointsLife: pointsLife !== undefined ? pointsLife : pointsLife,
-          pointsEnergy: pointsEnergy !== undefined ? pointsEnergy : pointsEnergy,
-          movement: movement !== undefined ? movement : movement,
-          block: block !== undefined ? block : block,
-          equipment: equipment ? { ...equipment, ...equipment } : equipment,
-          inventory: inventory ? { ...inventory, ...inventory } : inventory,
+          ...updateData // Atualiza todos os campos enviados
         },
       });
       return res.status(200).json(updatedSheet);
-
     } catch (error) {
-      res.status(500).json(' Ocorreu um erro ao atualizar os parâmetros da ficha.');
+      console.log(error)
+      res.status(500).json('Ocorreu um erro ao atualizar a ficha.');
     }
   };
 

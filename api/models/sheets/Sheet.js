@@ -1,7 +1,7 @@
 import AbilitieslegacyMap from './../utils/legacyAbilitiesMap.js';
 
 class Sheet {
-    constructor(pda, character = {}, equipment = {}, parameters = {}, combat = {}, knowledge = {}, inventory = {}, skill = {}, pointsLife) {
+    constructor(pda, character = {}, equipment = {}, parameters = {}, combat = {}, knowledge = {}, inventory = {}, skill = {}, pointsLife, pointsEnergy) {
 
         this.pda = pda;
         this.character = {
@@ -72,7 +72,8 @@ class Sheet {
         this.skill =[...skill];
         this.pointsLifeMax = this.calculateLifePoints();
         this.pointsLife = pointsLife,
-        this.pointsEnergy = this.calculatePointsEnergy();
+        this.pointsEnergy = pointsEnergy;
+        this.pointsEnergyMax = this.calculatePointsEnergy();
         this.movement = this.calculateMovement();
         this.block = this.calculateBlock();
     }
