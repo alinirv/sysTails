@@ -33,7 +33,7 @@ router.get('/sheet/findAll',sheetsController.getAllSheets);
 
 router.delete('/sheet/delete/:name', sheetsController.deleteSheet);
 
-router.put('/sheet/update/:name', sheetsController.updateSheet);
+router.put('/sheet/update/:id', sheetsController.updateSheet);
 
 router.post('/campaing', campaingController.createCampaign);
 
