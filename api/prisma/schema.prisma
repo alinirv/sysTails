@@ -35,6 +35,7 @@ model Sheet {
   skill          Json[]
   pointsLifeMax  Int
   pointsLife     Int
+  pointsEnergyMax Int
   pointsEnergy   Int
   movement       Int
   block          Int
