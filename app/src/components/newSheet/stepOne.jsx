@@ -1,11 +1,10 @@
 import { Card, CardHeader, CardBody, CardFooter, Typography, Button, } from "@material-tailwind/react";
 import legados from '../utils/legancyMap'
-import LegacyCard from "./LegancyCard";
 
 const StepOne = ({ handleNext }) => {
     return (
         <div>
-            <h2 className="text-xl font-bold mb-4 text-center">Escolha seu Legado</h2>
+            <h1 className="text-xl font-bold mb-4 text-center">Legado</h1>
             <div className="text-center mb-6">
                 <p>Quem é você? Escolha um dos povos do mundo de Auroria.</p>
                 <p>Cada Legado possui uma origem, sociedade e tradições únicas.</p>
