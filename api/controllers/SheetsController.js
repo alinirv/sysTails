@@ -33,7 +33,9 @@ class SheetsController {
           movement: sheet.movement,
           block: sheet.block,
           player: userName,
-          userId: userId
+          user: {
+            connect: { id: userId }
+          }
 
         }
       });
@@ -41,7 +43,9 @@ class SheetsController {
       return res.status(201).json(newSheet);
     } catch (error) {
       // Retorna erro caso algo dê errado
+      console.log(error)
       return res.status(500).json('Erro ao criar ficha.');
+      
     }
   };
 
