@@ -6,6 +6,7 @@ import Signup from './pages/register'
 import UserDashboard from './pages/userDashboard'
 import PrivateRoute from './components/auth/PrivateRoute'
 import SheetPage from './pages/sheets/SheetPage'
+import CreateSheet from './pages/sheets/CreateSheet'
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<UserDashboard />} />
           <Route path="/sheetPage/:idParam" element={<SheetPage />} />
+          <Route path="/createsheet" element={<CreateSheet/>} />
         </Route>
       </Routes>
     </BrowserRouter>
