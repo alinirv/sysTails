@@ -1,27 +1,24 @@
 import React, { useState } from 'react';
-import { Progress } from "@material-tailwind/react";
 import Navibar from '../../components/header/Navibar';
 import Footer from '../../components/footer/Footer';
 import StepOne from '../../components/newSheet/stepOne';
 import StepTwo from '../../components/newSheet/stepTwo';
+import StepThree from '../../components/newSheet/StepThree';
+
 
 const CreateSheet = () => {
     const [currentStep, setCurrentStep] = useState(1);
     const totalSteps = 6;
-
     const handleNext = () => {
         if (currentStep < totalSteps) {
             setCurrentStep(currentStep + 1);
         }
     };
-
     const handlePrevious = () => {
         if (currentStep > 1) {
             setCurrentStep(currentStep - 1);
         }
     };
-
-
     return (
         <div>
             <Navibar />
@@ -41,17 +38,15 @@ const CreateSheet = () => {
                             </div>
                         </div>
 
-                        <div className="bg-slate-950 text-white p-6 rounded-lg mt-4">
-                            {currentStep === 1 && <div><StepOne /></div>}
-                            {currentStep === 2 && <div><StepTwo />2</div>}
-                            {currentStep === 3 && <div>Conteúdo da Etapa 3</div>}
+                        <div className="bg-slate-950 text-white p-6 rounded-lg mt-4 ">
+                            {currentStep === 1 && <div><StepOne handleNext={handleNext}/></div>}
+                            {currentStep === 2 && <div><StepTwo handleNext={handleNext} handlePrevious={handlePrevious} currentStep={currentStep} totalSteps={totalSteps} /></div>}
+                            {currentStep === 3 && <div><StepThree handleNext={handleNext} handlePrevious={handlePrevious} currentStep={currentStep} totalSteps={totalSteps}/></div>}
                             {currentStep === 4 && <div>Conteúdo da Etapa 4</div>}
                             {currentStep === 5 && <div>Conteúdo da Etapa 5</div>}
                             {currentStep === 6 && <div>Conteúdo da Etapa 6</div>}
                         </div>
-                 
-
-     
+                
             </div>
             <Footer />
         </div>
