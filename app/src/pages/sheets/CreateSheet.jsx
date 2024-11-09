@@ -4,6 +4,7 @@ import Footer from '../../components/footer/Footer';
 import StepOne from '../../components/newSheet/stepOne';
 import StepTwo from '../../components/newSheet/stepTwo';
 import StepThree from '../../components/newSheet/StepThree';
+import StepFour from '../../components/newSheet/StepFour';
 
 
 const CreateSheet = () => {
@@ -42,7 +43,7 @@ const CreateSheet = () => {
                             {currentStep === 1 && <div><StepOne handleNext={handleNext}/></div>}
                             {currentStep === 2 && <div><StepTwo handleNext={handleNext} handlePrevious={handlePrevious} currentStep={currentStep} totalSteps={totalSteps} /></div>}
                             {currentStep === 3 && <div><StepThree handleNext={handleNext} handlePrevious={handlePrevious} currentStep={currentStep} totalSteps={totalSteps}/></div>}
-                            {currentStep === 4 && <div>Conteúdo da Etapa 4</div>}
+                            {currentStep === 4 && <div><StepFour handleNext={handleNext} handlePrevious={handlePrevious} currentStep={currentStep} totalSteps={totalSteps} /></div>}
                             {currentStep === 5 && <div>Conteúdo da Etapa 5</div>}
                             {currentStep === 6 && <div>Conteúdo da Etapa 6</div>}
                         </div>
