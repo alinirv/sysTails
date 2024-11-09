@@ -28,10 +28,16 @@ function UserDashboard() {
                         </Link>
                     </div>
                     <div className="bg-slate-800 p-6 rounded-lg mb-6">
-                        <SheetsDashboard />
-                    </div>
-                    <div className="bg-slate-800 p-6 rounded-lg mb-6">
-                        <CampaingDashboard />
+                        <div className="bg-slate-950 text-white p-6 rounded-lg shadow-lg">
+                            <div className="mb-6">
+                                <SheetsDashboard />
+                            </div>
+                            <div className="mb-6">
+                                <CampaingDashboard />
+                            </div>
+
+                        </div>
+
                     </div>
 
                 </div>

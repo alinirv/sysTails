@@ -33,7 +33,7 @@ function StepThree({ handleNext, handlePrevious, currentStep, totalSteps }) {
     };
 
     return (
-        <div className="max-w-screen-lgw-full max-w-screen-l">
+        <div className="w-full">
             <h2 className="text-xl font-bold mb-4 text-center">Parâmetro</h2>
             <div className="text-center mb-6 w-81">
                 <p>Destruir uma porta com o seu machado, mirar em um alvo com o
@@ -42,7 +42,7 @@ function StepThree({ handleNext, handlePrevious, currentStep, totalSteps }) {
                     utilizam os seus Parâmetros como base em testes, além de serem
                     potencializadores para certas habilidades de
                     Caminhos de Combate.</p><br />
-                <strong className="mb-4">Você tem {totalPoints} pontos restantes para distribuir.</strong>
+                <strong className="mb-4 text-teal-500">Você tem {totalPoints} pontos restantes para distribuir.</strong>
 
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-slate-800 p-6 rounded-lg mb-2 m-2">

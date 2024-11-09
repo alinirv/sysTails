@@ -17,7 +17,7 @@ const StepFive = ({ handleNext, handlePrevious, currentStep, totalSteps }) => {
     };
 
     return (
-        <div className="w-full max-w-screen-lg mb-8">
+        <div className="w-full">
             <h3 className="text-center text-2xl font-bold mb-4">Ajustes Finais</h3>
             {errorMessage && <p className="text-red-500">{errorMessage}</p>}
             <div className="mb-4">
@@ -32,7 +32,7 @@ const StepFive = ({ handleNext, handlePrevious, currentStep, totalSteps }) => {
                     required
                 />
             </div>
-            <div className="space-y-2 max-h-80 overflow-y-auto">
+            <div className="space-y-2 ">
                 <h3 className="text-2xl mb-4 text-teal-500">Itens iniciais</h3>
                 <p className="mb-6 ">Ah! Antes que a gente esqueça, pegue esses recursos iniciais, vai fazer toda a diferença:</p><br />
                 {itens.map((item, index) => (

@@ -40,7 +40,7 @@ const CreateSheet = () => {
                             </div>
                         </div>
 
-                        <div className="bg-slate-950 text-white p-6 rounded-lg mt-4 ">
+                        <div className="bg-slate-950 text-white p-6 rounded-lg mt-4 w-full max-w-screen-lg ">
                             {currentStep === 1 && <div><StepOne handleNext={handleNext}/></div>}
                             {currentStep === 2 && <div><StepTwo handleNext={handleNext} handlePrevious={handlePrevious} currentStep={currentStep} totalSteps={totalSteps} /></div>}
                             {currentStep === 3 && <div><StepThree handleNext={handleNext} handlePrevious={handlePrevious} currentStep={currentStep} totalSteps={totalSteps}/></div>}

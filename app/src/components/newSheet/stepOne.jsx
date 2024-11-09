@@ -3,25 +3,22 @@ import legados from '../utils/legancyMap'
 
 const StepOne = ({ handleNext }) => {
     return (
-        <div>
+        <div className="w-full">
             <h1 className="text-xl font-bold mb-4 text-center">Legado</h1>
             <div className="text-center mb-6">
-                <p>Quem é você? Escolha um dos povos do mundo de Auroria.</p>
+                <strong className="text-teal-500">Quem é você? Escolha um dos povos do mundo de Auroria.</strong><br/>
                 <p>Cada Legado possui uma origem, sociedade e tradições únicas.</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 bg-slate-800 p-6 rounded-lg mb-6">
                 {legados.map((legado) => (
-                    <Card className="mt-6 w-96 bg-slate-200">
+                    <Card className="mt-6 w-full bg-slate-900 flex flex-co">
                         <CardHeader className="h-24 flex items-center justify-center bg-slate-950 text-teal-400 ">
                             <Typography variant="h4">{legado.nome}</Typography>
                         </CardHeader>
-                        <CardBody>
-                            <Typography variant='h6' className=" text-slate-950">
-                                <strong>Habilidades de Legado:</strong>
-                            </Typography>
+                        <CardBody className="flex-grow">
                             {legado.habilidades.map((habilidade, index) => (
-                                <Typography key={index} className="mt-2 text-slate-950">
-                                    <strong>{habilidade.nome}:</strong> {habilidade.descricao}
+                                <Typography key={index} className="mt-2 text-slate-200">
+                                    <strong className="text-teal-500">{habilidade.nome}:</strong> {habilidade.descricao}
                                 </Typography>
                             ))}
                         </CardBody>

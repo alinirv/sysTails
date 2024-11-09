@@ -39,13 +39,13 @@ function StepFour({ handleNext, handlePrevious, currentStep, totalSteps }) {
     };
 
     return (
-        <div className="max-w-screen-lgw-full max-w-screen-l">
+        <div className="w-full">
             <h2 className="text-xl font-bold mb-4 text-center">Conhecimentos</h2>
             <div className="text-center mb-6 w-81">
                 <p>Os Conhecimentos expressam os saberes e experiências de um
                     personagem, desde estudos acadêmicos até práticas cotidianas,
                     geralmente utilizadas em situações fora de combate.</p><br />
-                <strong className="mb-4">Você tem {totalPoints} pontos restantes para distribuir.</strong>
+                <strong className="mb-4 text-teal-500">Você tem {totalPoints} pontos restantes para distribuir.</strong>
 
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-slate-800 p-6 rounded-lg mb-2 m-2">
