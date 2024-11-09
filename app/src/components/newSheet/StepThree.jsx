@@ -38,7 +38,7 @@ function StepThree({ handleNext, handlePrevious, currentStep, totalSteps }) {
             <div className="text-center mb-6 w-81">
                 <p>Destruir uma porta com o seu machado, mirar em um alvo com o
                     seu arco, canalizar energia mística sobre um objeto mágico,<br/> ter
-                    um corpo e mente resistentes a efeitos místicos, por exemplo,,<br />
+                    um corpo e mente resistentes a efeitos místicos, por exemplo,<br />
                     utilizam os seus Parâmetros como base em testes, além de serem
                     potencializadores para certas habilidades de
                     Caminhos de Combate.</p><br />
