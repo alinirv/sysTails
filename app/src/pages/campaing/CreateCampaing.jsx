@@ -67,12 +67,18 @@ const CreateCampaign = () => {
                                 className="w-full p-2 bg-slate-800 text-white border border-slate-700 rounded"
                             />
                         </div >
-                        <div className="mb-6 px-4">
+                        <div className="flex justify-center space-x-6 mb-10">
+                            <button
+                                onClick={() => navigate('/dashboard')} 
+                                className="mt-6 bg-teal-600 hover:bg-teal-500 text-white font-bold py-2 px-4 rounded"
+                            >
+                                Voltar
+                            </button>
                             <button
                                 type="submit"
-                                className="w-full bg-teal-600 hover:bg-teal-500 text-white font-bold py-2 rounded"
+                                className="mt-6 bg-teal-600 hover:bg-teal-500 text-white font-bold py-2 px-4 rounded"
                             >
-                                Criar Campanha
+                                Ingressar na Campanha
                             </button>
                         </div>
 

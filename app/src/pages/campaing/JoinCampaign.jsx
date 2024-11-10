@@ -54,7 +54,7 @@ const JoinCampaign = () => {
                 <h2 className="text-2xl font-bold mb-4 text-center">Ingressar em uma Campanha</h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
-                        <label className="block mb-1">Token da Campanha</label>
+                        <label className="block mb-1 text-teal-500">Informe o Token da Campanha</label>
                         <input
                             type="text"
                             value={campaignToken}
@@ -64,7 +64,7 @@ const JoinCampaign = () => {
                         />
                     </div>
                     <div>
-                        <label className="block mb-1">Selecione sua Ficha</label>
+                        <label className="block mb-1 text-teal-500">Escolha sua Ficha</label>
                         <select
                             value={selectedSheetId}
                             onChange={(e) => setSelectedSheetId(e.target.value)}
