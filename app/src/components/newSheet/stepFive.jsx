@@ -1,25 +1,19 @@
 import React, { useState } from 'react';
 import StepNavigation from './StepNavigation';
 
-const StepFive = ({ handleNext, handlePrevious, currentStep, totalSteps }) => {
+const StepFive = ({ handleNext, handlePrevious, currentStep, totalSteps, handleDataUpdate }) => {
     const [characterName, setCharacterName] = useState('');
-    const [additionalItems, setAdditionalItems] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
+    //itens fixo cedido ao usuario
     const itens = ['1x Conjunto de Roupas', "3x Rações de Viagem", "1x Bolsa", "1x Saco de Dormir", "1x Cantil"];
-
-    const handleSubmit = () => {
-        if (!characterName) {
-            setErrorMessage('O nome do personagem é obrigatório.');
-            return;
-        }
-    
-   
-    };
+    //auxilia na formatação do campo
+    const step5 ={
+        nome: characterName,
+        itens: itens
+    }
 
     return (
         <div className="w-full">
             <h3 className="text-center text-2xl font-bold mb-4">Ajustes Finais</h3>
-            {errorMessage && <p className="text-red-500">{errorMessage}</p>}
             <div className="mb-4">
                 <label className="block mb-4" htmlFor="characterName">Qual o nome do seu Aventureiro?:</label>
                 <input
@@ -43,10 +37,12 @@ const StepFive = ({ handleNext, handlePrevious, currentStep, totalSteps }) => {
                 ))}
             </div>
             <StepNavigation
-                handleNext={handleNext} 
+                handleNext={characterName ? handleNext : null} 
                 handlePrevious={handlePrevious}
                 currentStep={currentStep}
                 totalSteps={totalSteps}
+                handleDataUpdate={handleDataUpdate}
+                data={step5}
             />
             
         </div>

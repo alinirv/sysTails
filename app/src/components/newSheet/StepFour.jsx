@@ -1,7 +1,7 @@
 import { useState } from "react";
 import StepNavigation from './StepNavigation';
 
-function StepFour({ handleNext, handlePrevious, currentStep, totalSteps }) {
+function StepFour({ handleNext, handlePrevious, currentStep, totalSteps, handleDataUpdate }) {
     const [totalPoints, setTotalPoints] = useState(7);
     const initialKnowledge = {
         carisma: 0,
@@ -64,6 +64,8 @@ function StepFour({ handleNext, handlePrevious, currentStep, totalSteps }) {
                 handlePrevious={handlePrevious}
                 currentStep={currentStep}
                 totalSteps={totalSteps}
+                handleDataUpdate={handleDataUpdate}
+                data={{knowledge}}
             />
 
         </div>

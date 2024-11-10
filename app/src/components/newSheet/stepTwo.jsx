@@ -2,20 +2,35 @@ import { useState } from "react";
 import combatPaths from '../utils/combatPaths';
 import StepNavigation from '../../components/newSheet/StepNavigation';
 
-function StepTwo({ handleNext, handlePrevious, currentStep, totalSteps }) {
+function StepTwo({ handleNext, handlePrevious, currentStep, totalSteps, handleDataUpdate }) {
     const [selectedSkills, setSelectedSkills] = useState([]);
 
+    // Função para selecionar ou deselecionar habilidades
     const handleSkillChange = (skill) => {
-        if (selectedSkills.includes(skill)) {
-            setSelectedSkills(selectedSkills.filter(s => s !== skill));
+        const skillObject = {
+            nome: skill,
+            custoPE: "",
+            acao: "",
+            tipo: "",
+            duracao: "",
+            descricao: ""
+        };
+
+        if (selectedSkills.some(s => s.nome === skill)) {
+            // Se a habilidade já estiver selecionada, removê-la
+            setSelectedSkills(selectedSkills.filter(s => s.nome !== skill));
         } else {
+            // Se não estiver selecionada e houver menos de 2 habilidades selecionadas, adicione-a
             if (selectedSkills.length < 2) {
-                setSelectedSkills([...selectedSkills, skill]);
-            } else {
-                setSelectedSkills([skill]);
+                setSelectedSkills([...selectedSkills, skillObject]);
             }
         }
     };
+
+    // Verifica se o usuário selecionou exatamente duas habilidades antes de permitir a navegação
+    const canProceed = selectedSkills.length === 2;
+    //auxilia na formatação do campo
+    const listaSkills ={skill:selectedSkills}
 
     return (
         <div className="max-w-screen-lg w-full mx-auto p-6 bg-slate-950 rounded-lg shadow-md">
@@ -36,11 +51,10 @@ function StepTwo({ handleNext, handlePrevious, currentStep, totalSteps }) {
                                     {skills.map(skill => (
                                         <div
                                             key={skill}
-                                            className={`flex items-center p-2 cursor-pointer rounded-lg hover:bg-teal-600 transition duration-200 ${selectedSkills.includes(skill) ? 'bg-teal-700' : 'bg-slate-900'}`}
+                                            className={`flex items-center p-2 cursor-pointer rounded-lg hover:bg-teal-600 transition duration-200 ${selectedSkills.some(s => s.nome === skill) ? 'bg-teal-700' : 'bg-slate-900'}`}
                                             onClick={() => handleSkillChange(skill)}
                                         >
-                                            <ion-icon name={selectedSkills.includes(skill) ? "checkmark-outlin" : "circle-outlin"} className="text-teal-500 mr-2"></ion-icon>
-                                            <span className={`font-normal ${selectedSkills.includes(skill) ? 'font-bold text-teal-200' : 'text-blue-gray-400'}`}>
+                                            <span className={`font-normal ${selectedSkills.some(s => s.nome === skill) ? 'font-bold text-teal-200' : 'text-blue-gray-400'}`}>
                                                 {skill}
                                             </span>
                                         </div>
@@ -52,11 +66,14 @@ function StepTwo({ handleNext, handlePrevious, currentStep, totalSteps }) {
                 ))}
             </div>
             <StepNavigation
-                handleNext={handleNext}
+                handleNext={canProceed ? handleNext : null}
                 handlePrevious={handlePrevious}
                 currentStep={currentStep}
                 totalSteps={totalSteps}
-            />
+                handleDataUpdate={handleDataUpdate}
+                data={listaSkills} 
+            >
+            </StepNavigation>
         </div>
     );
 }
