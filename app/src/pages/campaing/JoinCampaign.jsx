@@ -41,8 +41,7 @@ const JoinCampaign = () => {
                 navigate('/dashboard'); // Redireciona para o painel após o ingresso
             }
         } catch (error) {
-            console.error('Erro ao ingressar na campanha:', error);
-            alert('Erro ao ingressar na campanha. Verifique o token da campanha e a ficha selecionada.');
+            alert(error.response?.data.message|| 'Erro desconhecido');
         }
     };
 

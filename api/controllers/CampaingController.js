@@ -28,7 +28,7 @@ class CampaingController {
     };
 
     async joinCampaign(req, res) {
-        const { campaignToken, sheetName } = req.body;
+        const { campaignToken, sheetId } = req.body;
         const userId = req.userId;
 
         try {
@@ -41,7 +41,7 @@ class CampaingController {
 
             const sheet = await prisma.sheet.findFirst({
                 where: {
-                    name: sheetName,
+                    id: sheetId,
                     userId: userId,
                 },
             });
@@ -51,6 +51,16 @@ class CampaingController {
                 if (campaign.status === 'CLOSED') {
                     return res.status(404).json({ message: 'Campanha encerrada.' });
                 }
+                // Verificar se a ficha já está associada à campanha
+                const existingEntry = await prisma.campaignSheets.findFirst({
+                    where: {
+                        campaignId: campaign.id,
+                        sheetId: sheet.id,
+                    },
+                });
+                if (existingEntry) {
+                    return res.status(400).json({ message: 'Ficha já está associada a esta campanha.' });
+                }
                 await prisma.campaignSheets.create({
                     data: {
                         campaignId: campaign.id,
@@ -58,7 +68,6 @@ class CampaingController {
                         assignedBy: userId
                     }
                 });
-
                 return res.status(200).json({ message: 'Ficha adicionada à campanha com sucesso.' });
             }
             return res.status(404).json({ message: 'Verifique se a campanha esta aberta ou se o nome da ficha esta correto!.' });
@@ -111,7 +120,7 @@ class CampaingController {
     };
 
     async deleteCampaign(req, res) {
-        const {campaignToken} = req.params;
+        const { campaignToken } = req.params;
         const userId = req.userId;
 
         try {
@@ -143,7 +152,7 @@ class CampaingController {
     };
     async deleteSheetCampaign(req, res) {
         const { campaignId, sheetId } = req.body;
-    
+
         try {
             const campaignSheet = await prisma.campaignSheets.findFirst({
                 where: {
@@ -151,11 +160,11 @@ class CampaingController {
                     sheetId: sheetId,
                 },
             });
-    
+
             if (!campaignSheet) {
                 return res.status(404).json({ message: 'This sheet is not associated with the campaign.' });
             }
-    
+
             await prisma.campaignSheets.delete({
                 where: {
                     campaignId_sheetId: {
@@ -164,7 +173,7 @@ class CampaingController {
                     },
                 },
             });
-    
+
             return res.status(200).json({ message: 'Sheet successfully removed from campaign.' });
         } catch (error) {
             console.error(error);
@@ -203,21 +212,21 @@ class CampaingController {
 
     async getUserCampaigns(req, res) {
         const userId = req.userId;
-    
+
         try {
             const campaigns = await prisma.campaign.findMany({
                 where: {
-                    userId: userId, 
+                    userId: userId,
                 },
                 include: {
                     sheets: true,
                 },
             });
-    
+
             if (campaigns.length === 0) {
                 return res.status(404).json({ message: 'No campaigns found for this user.' });
             }
-    
+
             return res.status(200).json(campaigns);
         } catch (error) {
             console.error(error);
