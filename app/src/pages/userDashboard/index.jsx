@@ -17,13 +17,13 @@ function UserDashboard() {
             <main>
                 <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 bg-slate-950 mt-8 mb-8 pb-6 rounded-2xl">
                     <div className="flex justify-center space-x-6 mb-10">
-                        <Link to="/createSheet" className="mt-6 bg-teal-600 hover:bg-teal-500 text-white font-bold py-2 px-4 rounded">
+                        <Link to="/create-sheet" className="mt-6 bg-teal-600 hover:bg-teal-500 text-white font-bold py-2 px-4 rounded">
                             Criar Nova Ficha
                         </Link>
-                        <Link to="/createCampaing" className="mt-6 bg-teal-600 hover:bg-teal-500 text-white font-bold py-2 px-4 rounded">
+                        <Link to="/create-campaing" className="mt-6 bg-teal-600 hover:bg-teal-500 text-white font-bold py-2 px-4 rounded">
                             Criar Nova Campanha
                         </Link>
-                        <Link to="/create-sheet" className="mt-6 bg-teal-600 hover:bg-teal-500 text-white font-bold py-2 px-4 rounded">
+                        <Link to="/join-campaign" className="mt-6 bg-teal-600 hover:bg-teal-500 text-white font-bold py-2 px-4 rounded">
                             Ingressar em uma Campanha
                         </Link>
                     </div>

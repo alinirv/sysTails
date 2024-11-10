@@ -49,7 +49,7 @@ const SheetsDashboard = () => {
                         <h2 className="text-xl font-semibold text-white mb-2">{sheet.character.nome}</h2>
                         <p className="text-teal-500 mb-4">PDA: {sheet.pda}</p>
                         <div className="flex justify-between items-center">
-                            <Link to={`/sheetPage/${sheet.id}`} className="text-teal-500 hover:text-teal-600">
+                            <Link to={`/sheet-page/${sheet.id}`} className="text-teal-500 hover:text-teal-600">
                                 Abrir
                             </Link>
                             <button

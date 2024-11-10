@@ -8,6 +8,7 @@ import PrivateRoute from './components/auth/PrivateRoute'
 import SheetPage from './pages/sheets/SheetPage'
 import CreateSheet from './pages/sheets/CreateSheet'
 import CreateCampaign from './pages/campaing/CreateCampaing'
+import JoinCampaign from './pages/campaing/JoinCampaign'
 
 function App() {
 
@@ -19,9 +20,10 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<UserDashboard />} />
-          <Route path="/sheetPage/:idParam" element={<SheetPage />} />
-          <Route path="/createSheet" element={<CreateSheet/>} />
-          <Route path="/createCampaing" element={<CreateCampaign/>}/>
+          <Route path="/sheet-page/:idParam" element={<SheetPage />} />
+          <Route path="/create-sheet" element={<CreateSheet/>} />
+          <Route path="/create-campaing" element={<CreateCampaign/>}/>
+          <Route path="/join-campaign" element={<JoinCampaign />} />
         </Route>
       </Routes>
     </BrowserRouter>
