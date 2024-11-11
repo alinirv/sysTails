@@ -68,7 +68,7 @@ const CreateSheet = () => {
             });
 
             if (data) {
-                navigate(`/sheetPage/${data.id}`)
+                navigate(`/sheet-page/${data.id}`)
             } else {
                 alert('Erro ao criar ficha.');
             }

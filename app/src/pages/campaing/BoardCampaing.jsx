@@ -5,6 +5,7 @@ import { Button, Dialog, DialogHeader, DialogBody, DialogFooter, Card, CardHeade
 import SheetDisplay from '../../components/campaing/SheetsDisplay';
 import Navibar from '../../components/header/Navibar';
 import Footer from '../../components/footer/Footer';
+import DiceRoller from '../../components/dice/DiceController';
 
 
 const CampaignDetail = () => {
@@ -78,6 +79,9 @@ const CampaignDetail = () => {
                             >
                                 Fechar campanha
                             </button>
+                        </div>
+                        <div> 
+                            <DiceRoller/>
                         </div>
                     </div>
                     <h3 className="text-2xl font-bold mt-6 text-teal-400">Fichas</h3>
