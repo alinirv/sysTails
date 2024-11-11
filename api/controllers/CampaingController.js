@@ -233,6 +233,34 @@ class CampaingController {
             res.status(500).json({ message: 'An error occurred while fetching user campaigns.' });
         }
     }
+    async getCampaignByToken(req, res) {
+        const {token}  = req.params; // Extração corrigida
+    console.log(token)
+        try {
+            const campaign = await prisma.campaign.findFirst({
+                where: {
+                    token: token,
+                },
+                include: {
+                    sheets: {
+                        include: {
+                            sheet: true // Inclui os detalhes da ficha associada
+                        }
+                    }
+                },
+            });
+    
+            if (!campaign) {
+                return res.status(404).json({ message: 'Campanha não encontrada.' });
+            }
+    
+            return res.status(200).json(campaign);
+        } catch (error) {
+            console.error('Erro ao buscar campanha:', error);
+            res.status(500).json({ message: 'Erro ao buscar a campanha.' });
+        }
+    }
+    
 }
 
 export default CampaingController

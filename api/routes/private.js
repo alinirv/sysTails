@@ -49,5 +49,7 @@ router.delete('/campaing/deleteSheets', campaingController.deleteSheetCampaign);
 
 router.put('/camapaing/update/:token',  campaingController.updateCampaingStatus);
 
+router.get('/campaing/find/:token', campaingController.getCampaignByToken);
+
 
 export default router;
