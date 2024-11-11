@@ -26,19 +26,22 @@ const SheetsDashboard = () => {
         }
     };
 
-    const handleDeleteSheet = async (sheetName) => {
-        if (window.confirm(`Tem certeza que deseja excluir a ficha "${sheetName}"?`)) {
+    const handleDeleteSheet = async (sheetId) => {
+        if (window.confirm('Tem certeza que deseja excluir esta ficha?')) {
             try {
-                await api.delete(`/sheet/delete/${sheetName}`, {
+                const {data} = await api.delete(`/sheet/delete/${sheetId}`, {
                     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
                 });
-                setSheets(sheets.filter(sheet => sheet.name !== sheetName));
+                // Atualiza o estado removendo a ficha excluída
+                setSheets(sheets.filter(sheet => sheet.id !== sheetId));
+                alert(data);
             } catch (err) {
-                setError('Falha ao excluir a ficha. Por favor, tente novamente.');
                 console.error('Erro ao excluir ficha:', err);
+                alert('Erro ao excluir a ficha. Tente novamente.');
             }
         }
     };
+    
 
     return (
         <div >
@@ -53,7 +56,7 @@ const SheetsDashboard = () => {
                                 Abrir
                             </Link>
                             <button
-                                onClick={() => handleDeleteSheet(sheet.name)}
+                                onClick={() => handleDeleteSheet(sheet.id)}
                                 className="text-red-500 hover:text-red-400 transition duration-200"
                             >
                                 <ion-icon name="trash-outline"></ion-icon>

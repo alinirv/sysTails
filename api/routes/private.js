@@ -31,7 +31,7 @@ router.get('/sheet/find/:id',sheetsController.getSheet);
 
 router.get('/sheet/findAll',sheetsController.getAllSheets);
 
-router.delete('/sheet/delete/:name', sheetsController.deleteSheet);
+router.delete('/sheet/delete/:id', sheetsController.deleteSheet);
 
 router.put('/sheet/update/:id', sheetsController.updateSheet);
 
