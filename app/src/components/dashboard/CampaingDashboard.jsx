@@ -48,7 +48,7 @@ const CampaingDashboard = () => {
                         <p className="text-teal-500 mb-4">Status: {campaing.status}</p>
                         <p className="text-teal-500 mb-4">Token: {campaing.token}</p>
                         <div className="flex justify-between items-center">
-                            <Link to={'/'} className="text-teal-500 hover:text-teal-600">
+                            <Link to={`/board-campaing/${campaing.token}`} className="text-teal-500 hover:text-teal-600">
                                 Abrir
                             </Link>
                             <button

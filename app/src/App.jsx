@@ -9,6 +9,7 @@ import SheetPage from './pages/sheets/SheetPage'
 import CreateSheet from './pages/sheets/CreateSheet'
 import CreateCampaign from './pages/campaing/CreateCampaing'
 import JoinCampaign from './pages/campaing/JoinCampaign'
+import CampaignDetail from './pages/campaing/BoardCampaing'
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
           <Route path="/create-sheet" element={<CreateSheet/>} />
           <Route path="/create-campaing" element={<CreateCampaign/>}/>
           <Route path="/join-campaign" element={<JoinCampaign />} />
+          <Route path="/board-campaing/:token" element={<CampaignDetail/>}/>
         </Route>
       </Routes>
     </BrowserRouter>
