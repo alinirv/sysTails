@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../../services/api';
-import { Button, Dialog, DialogHeader, DialogBody, DialogFooter, Card, CardHeader, CardBody, CardFooter, Typography } from "@material-tailwind/react";
+import { Button, Card, CardHeader, CardBody, CardFooter, Typography } from "@material-tailwind/react";
 import SheetDisplay from '../../components/campaing/SheetsDisplay';
 import Navibar from '../../components/header/Navibar';
 import Footer from '../../components/footer/Footer';
@@ -17,23 +17,24 @@ const CampaignDetail = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
 
-    // Função para buscar campanha
     useEffect(() => {
-        const fetchCampaign = async () => {
-            try {
-                const response = await api.get(`/campaing/find/${token}`, {
-                    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-                });
-                setCampaign(response.data);
-                setSheetsList(response.data.sheets);
-            } catch (error) {
-                console.error('Erro ao buscar detalhes da campanha:', error);
-                alert('Erro ao buscar detalhes da campanha.');
-            }
-        };
 
         fetchCampaign();
-    }, [token]);
+    },);
+
+    // Função para buscar campanha
+    const fetchCampaign = async () => {
+        try {
+            const response = await api.get(`/campaing/find/${token}`, {
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+            });
+            setCampaign(response.data);
+            setSheetsList(response.data.sheets);
+        } catch (error) {
+            console.error('Erro ao buscar detalhes da campanha:', error);
+            alert('Erro ao buscar detalhes da campanha.');
+        }
+    };
 
     // Função para abrir o modal com a ficha atualizada
     const openModal = async (sheet) => {
@@ -61,14 +62,36 @@ const CampaignDetail = () => {
             const response = await api.put(`/campaing/update/${token}`, {}, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
-    
+
             // Atualiza o estado no quadro da campanha
             setCampaign((prevCampaign) => ({ ...prevCampaign, status: newStatus }));
+            alert('Status alterado com sucesso.');
         } catch (error) {
             console.error('Erro ao atualizar o status da campanha:', error);
             alert('Erro ao atualizar o status da campanha.');
         }
     };
+
+    //Remove uma ficha da campanha
+    const removeSheet = async (sheetId) => {
+        const campaignId = campaign.id
+        try {
+            const response = await api.delete('/campaing/deleteSheets', {
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+                data: { campaignId, sheetId }
+            });
+
+            console.log('Ficha removida com sucesso:', response.data);
+            closeModal()
+            alert('Ficha removida com sucesso.');
+            fetchCampaign()
+        }
+        catch (error) {
+            console.error('Erro ao atualizar o status da campanha:', error);
+            alert('Erro ao atualizar o status da campanha.');
+        }
+
+    }
 
     if (!campaign) return <div>Carregando...</div>;
 
@@ -153,7 +176,8 @@ const CampaignDetail = () => {
                     <div className="bg-slate-950 text-white max-w-screen-lg w-full mt-8 items-center px-4 py-6 rounded-lg">
                         <div className="bg-slate-950 p-6 rounded-lg shadow-lg ">
                             <div className="flex justify-end mt-6 lg:grid-cols-2 gap-4 mb-10">
-                                <button // onClick={() => openModal(sheet)}
+                                <button
+                                    onClick={() => removeSheet(selectedSheet.id)}
                                     className='bg-teal-600 hover:bg-teal-500 text-white font-bold py-1 px-3 rounded transition duration-200 text-sm'>
                                     Remover
                                 </button>

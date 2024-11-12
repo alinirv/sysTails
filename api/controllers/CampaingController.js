@@ -162,22 +162,19 @@ class CampaingController {
             });
 
             if (!campaignSheet) {
-                return res.status(404).json({ message: 'This sheet is not associated with the campaign.' });
+                return res.status(404).json('Ficha não encontrada ou associada a essa campanha.');
             }
 
             await prisma.campaignSheets.delete({
                 where: {
-                    campaignId_sheetId: {
-                        campaignId: campaignId,
-                        sheetId: sheetId,
-                    },
+                    id: campaignSheet.id
                 },
             });
 
-            return res.status(200).json({ message: 'Sheet successfully removed from campaign.' });
+            return res.status(200).json('Ficha removida da campanha com sucesso');
         } catch (error) {
             console.error(error);
-            res.status(500).json({ message: 'An error occurred while removing the sheet from the campaign.' });
+            res.status(500).json('Ocorreu um erro ao remover a ficha da campanha.');
         }
     }
 
