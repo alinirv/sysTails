@@ -4,7 +4,7 @@ import Campaning from '../models/campaign/Campaign.js'
 const prisma = new PrismaClient();
 
 class CampaingController {
-
+// Método para criar campanha
     async createCampaign(req, res) {
         const { name, description, masterName } = req.body;
         const campaign = new Campaning(name, description, masterName)
@@ -26,7 +26,7 @@ class CampaingController {
             return res.status(500).json({ message: 'Erro ao criar a campanha.' });
         }
     };
-
+// Método para entrar em uma campanha
     async joinCampaign(req, res) {
         const { campaignToken, sheetId } = req.body;
         const userId = req.userId;
@@ -77,7 +77,7 @@ class CampaingController {
             return res.status(500).json({ message: 'Erro ao adicionar a ficha à campanha.' });
         }
     };
-
+// Método para buscar todas campanhas
     async getAllCampaignSheets(req, res) {
         const { campaignToken } = req.body;
         const userId = req.userId;
@@ -118,38 +118,37 @@ class CampaingController {
             res.status(500).json('An error occurred while fetching campaigns.');
         }
     };
-
+// Método para deletar uma campanha e as fichas associadas
     async deleteCampaign(req, res) {
-        const { campaignToken } = req.params;
-        const userId = req.userId;
+        const { id } = req.params;
 
         try {
-            const campaign = await prisma.campaign.findFirst({
-                where: {
-                    token: campaignToken,
-                    userId: userId,
-                },
+            // Verifica se a campanha existe
+            const campaign = await prisma.campaign.findUnique({
+                where: { id },
             });
 
-            if (campaign) {
-                await prisma.campaignSheets.deleteMany({
-                    where: { campaignId: campaign.id },
-                });
-
-                await prisma.campaign.delete({
-                    where: {
-                        id: campaign.id
-                    }
-                });
-                return res.status(200).json({ message: 'campaign deleted successfully.' });
+            if (!campaign) {
+                return res.status(404).json({ error: 'Campanha não encontrada.' });
             }
-            return res.status(404).json({ message: 'campaign not found.' });
 
+            // Deleta todas as fichas associadas à campanha
+            await prisma.campaignSheets.deleteMany({
+                where: { campaignId: id },
+            });
+
+            // Deleta a campanha
+            await prisma.campaign.delete({
+                where: { id },
+            });
+
+            return res.status(200).json({ message: 'Campanha deletada com sucesso.' });
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ message: 'An error occurred when deleting the campaign.' });
+            console.error('Erro ao deletar campanha:', error);
+            return res.status(500).json({ error: 'Erro ao deletar campanha.' });
         }
     };
+// Método para remover uma ficha de uma campanha
     async deleteSheetCampaign(req, res) {
         const { campaignId, sheetId } = req.body;
 
@@ -177,7 +176,7 @@ class CampaingController {
             res.status(500).json('Ocorreu um erro ao remover a ficha da campanha.');
         }
     }
-
+// Método para atualizar o status de uma campanha
     async updateCampaingStatus(req, res) {
         const { token } = req.params;
         const userId = req.body;

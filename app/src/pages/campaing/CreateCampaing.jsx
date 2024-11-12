@@ -78,7 +78,7 @@ const CreateCampaign = () => {
                                 type="submit"
                                 className="mt-6 bg-teal-600 hover:bg-teal-500 text-white font-bold py-2 px-4 rounded"
                             >
-                                Ingressar na Campanha
+                                Criar Campanha
                             </button>
                         </div>
 

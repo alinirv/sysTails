@@ -24,10 +24,10 @@ const CampaingDashboard = () => {
         }
     };
 
-    const handleDeletecampaing = async (campaingName, campaingToken) => {
+    const handleDeletecampaing = async (campaingName, campaingId) => {
         if (window.confirm(`Tem certeza que deseja excluir a campanha "${campaingName}"?`)) {
             try {
-                await api.delete(`/campaing/delete/${campaingToken}`, {
+                await api.delete(`/campaing/delete/${campaingId}`, {
                     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
                 });
                 setcampaing(campaing.filter(campaing => campaing.name !== campaingName));
@@ -51,7 +51,7 @@ const CampaingDashboard = () => {
                                 Abrir
                             </Link>
                             <button
-                                onClick={() => handleDeletecampaing(campaing.name, campaing.token)}
+                                onClick={() => handleDeletecampaing(campaing.name, campaing.id)}
                                 className="text-red-500 hover:text-red-400 transition duration-200"
                             >
                                 <ion-icon name="trash-outline"></ion-icon>

@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../../services/api';
-import Navibar from '../header/Navibar';
-import Footer from '../footer/Footer';
 
 const SheetsDashboard = () => {
     const [sheets, setSheets] = useState([]);

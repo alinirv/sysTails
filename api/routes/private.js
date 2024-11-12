@@ -43,7 +43,7 @@ router.get('/campaing/findSheets', campaingController.getAllCampaignSheets);
 
 router.get('/campaing/find', campaingController.getUserCampaigns);
 
-router.delete('/campaing/delete/:token', campaingController.deleteCampaign);
+router.delete('/campaing/delete/:id', campaingController.deleteCampaign);
 
 router.delete('/campaing/deleteSheets', campaingController.deleteSheetCampaign);
 
