@@ -29,8 +29,9 @@ const SheetsDashboard = () => {
     const handleDeleteSheet = async (sheetId) => {
         if (window.confirm('Tem certeza que deseja excluir esta ficha?')) {
             try {
-                const {data} = await api.delete(`/sheet/delete/${sheetId}`, {
-                    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+                const {data} = await api.delete('/sheet/delete/', {
+                    headers: { Authorization: `Bearer ${localStorage.getItem('token')}`},
+                    data: { sheetId } 
                 });
                 // Atualiza o estado removendo a ficha excluída
                 setSheets(sheets.filter(sheet => sheet.id !== sheetId));

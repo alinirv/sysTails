@@ -93,18 +93,22 @@ class SheetsController {
       res.status(500).json(' Ocorreu um erro ao obter fichas.');
     }
   };
-  //revisar
+  //Método para deletar uma ficha
   async deleteSheet(req, res) {
-    const { id } = req.params;
+    const { sheetId  } = req.body;
+    
+    const userId = req.userId;
     try {
-      await prisma.sheet.findFirst({
+      await prisma.sheet.delete({
         where: {
-          id: id,
+          id: sheetId,
+          userId: userId,
         },
       });
       return res.status(200).json('Ficha deletada com sucesso.');
 
     } catch (error) {
+      console.log(error)
       res.status(500).json('Ocorreu um erro ao deletar a ficha.');
     }
   };
