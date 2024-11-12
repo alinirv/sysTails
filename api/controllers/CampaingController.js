@@ -208,7 +208,7 @@ class CampaingController {
             return res.status(500).json({ message: 'An error occurred while updating the Campaing parameter.' });
         }
     };
-
+// Método para buscar todas campanhas de um usuario
     async getUserCampaigns(req, res) {
         const userId = req.userId;
 
@@ -229,6 +229,7 @@ class CampaingController {
             res.status(500).json('An error occurred while fetching user campaigns.');
         }
     }
+    // Método para buscar uma campanha por token
     async getCampaignByToken(req, res) {
         const { token } = req.params;
         try {
@@ -255,7 +256,6 @@ class CampaingController {
             res.status(500).json({ message: 'Erro ao buscar a campanha.' });
         }
     }
-
 }
 
 export default CampaingController

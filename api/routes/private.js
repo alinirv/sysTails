@@ -1,25 +1,12 @@
 import express from "express";
-import { PrismaClient } from '@prisma/client';
 import DiceController from '../controllers/DiceController.js';
 import SheetsController from "../controllers/SheetsController.js";
 import CampaingController from "../controllers/CampaingController.js";
 
 const router = express.Router();
-const prisma = new PrismaClient();
 const diceController = new DiceController();
 const sheetsController = new SheetsController();
 const campaingController = new CampaingController
-
-//teste
-router.get('/home', async (req, res) => {
-    try {
-        const user = await prisma.user.findMany();
-        res.status(200).json(user);
-    } catch (err) {
-        res.status(500).json('Error no servidor, tente mais tarde!');
-
-    }
-});
 
 router.get('/roll', diceController.roll);
 
