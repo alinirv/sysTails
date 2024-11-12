@@ -40,30 +40,34 @@ const DiceRoller = () => {
     };
 
     return (
-        <div className="bg-slate-950 p-6 rounded-lg shadow-lg w-full max-w-md mx-auto mt-6">
+        <div >
             {/* Entrada para o modificador */}
-            <div className="flex items-center justify-center gap-4 mb-6">
+            <div className="mb-6 flex items-center">
+                <button onClick={modifiers > 0 ? rollDiceWithModifier : rollDice} className="px-3 focus:outline-none ml-2">
+                    <img src={d12Icon} alt="Rolar Dado" className="w-16 h-16 hover:scale-105 transition-transform" />
+                </button>
+
                 <input
+                    id="modifiers"
                     type="number"
                     value={modifiers}
                     onChange={(e) => setModifiers(e.target.value)}
                     placeholder="Modificador"
-                    className="bg-slate-800 text-white border border-slate-700 rounded py-2 px-3 focus:outline-none focus:border-teal-500"
+                    className="bg-slate-800 text-white border border-slate-700 rounded py-2 px-3 focus:outline-none focus:border-teal-500 w-16"
                 />
+                <label htmlFor="modifiers" className="text-teal-500 px-3 mr-2">
+                    Modificador
+                </label>
+
             </div>
 
-            {/* Botão para rolar o dado */}
-            <div className="flex justify-center items-center mb-6">
-                <button onClick={modifiers > 0 ? rollDiceWithModifier : rollDice} className="focus:outline-none">
-                    <img src={d12Icon} alt="Rolar Dado" className="w-16 h-16 hover:scale-105 transition-transform" />
-                </button>
-            </div>
+
 
             {/* Modal para exibir o resultado */}
             {showModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20">
                     <div className="bg-slate-900 p-6 rounded-lg shadow-lg text-center w-80">
-                        <h2 className="text-2xl text-teal-400 font-bold mb-4">Resultado da Rolagem</h2>
+                        <h2 className="text-2xl text-teal-400 font-bold mb-4">Resultado</h2>
                         {result !== null && (
                             <p className="text-white mb-4">🎲 Resultado: <span className="text-teal-400 font-bold">{result}</span></p>
                         )}
