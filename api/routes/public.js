@@ -9,12 +9,12 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 router.post('/signup', async (req, res) => {
     try {
-        const user = req.body;
+        const { name, email, password } = req.body;
 
         // Verificar se o email já existe
         const existingUser = await prisma.user.findUnique({
             where: {
-                email: user.email,
+                email: email,
             },
         });
 
@@ -23,31 +23,27 @@ router.post('/signup', async (req, res) => {
         }
 
         const salt = await bcrypt.genSalt(10);
-
-        const hashPassword = await bcrypt.hash(user.password, salt);
+        const hashPassword = await bcrypt.hash(password, salt);
 
         const userdb = await prisma.user.create({
             data: {
-                email: user.email,
-                name: user.name,
+                email: email,
+                name: name,
                 password: hashPassword
             }
+        });
 
-        })
-        //generate token
+        // Gerar token
         const payload = {
             id: userdb.id,
             name: userdb.name
         };
-        const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1d' })
-
-        const userID = user.id
+        const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1d' });
 
         return res.status(200).json(token);
 
     } catch (err) {
-        res.status(500).json('Error no servidor, tente mais tarde!');
-
+        res.status(500).json('Erro no servidor, tente mais tarde!');
     }
 });
 

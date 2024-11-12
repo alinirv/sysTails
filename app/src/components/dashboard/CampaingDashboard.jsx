@@ -13,12 +13,12 @@ const CampaingDashboard = () => {
     async function fetchcampaing() {
         if (!isLoading) return;
         try {
-            const response = await api.get('/campaing/find', {
+            const {data}= await api.get('/campaing/find', {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
-            setcampaing(response.data);
+            setcampaing(data);
         } catch (err) {
-            alert(err.response?.data || 'Erro desconhecido');
+            console.error('Erro:', err);
         } finally {
             setIsLoading(true);
         }
@@ -32,7 +32,6 @@ const CampaingDashboard = () => {
                 });
                 setcampaing(campaing.filter(campaing => campaing.name !== campaingName));
             } catch (err) {
-                setError('Falha ao excluir a campanha. Por favor, tente novamente.');
                 console.error('Erro ao excluir campanha:', err);
             }
         }

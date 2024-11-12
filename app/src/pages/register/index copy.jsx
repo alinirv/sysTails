@@ -35,7 +35,7 @@ function Register() {
         }
         return '';
     };
-    
+
     async function handleSubmit(event) {
         event.preventDefault();
         
@@ -46,24 +46,25 @@ function Register() {
             setPasswordError(error);
             return;
         }
-    
+
         setPasswordError(''); // Limpa erros anteriores
-    
+
         try {
             const { data } = await api.post('/signup', {
                 name: nameRef.current.value,
                 email: emailRef.current.value,
                 password: password
             });
-            if (data) {
-                localStorage.setItem('token', data);
+            const token = data;
+            if (token) {
+                localStorage.setItem('token', token);
                 navigate('/dashboard'); 
             }
         } catch (err) {
-            alert(err.data || 'Erro desconhecido');
+            alert(err.response?.data || 'Erro desconhecido');
         }
     }
-    
+
     return (
         <div>
             <Navibar />
@@ -73,33 +74,23 @@ function Register() {
                     <form className="space-y-4" onSubmit={handleSubmit}>
                         <input
                             ref={nameRef}
-                            placeholder="Digite seu nome de usuário"
+                            placeholder="Nome de usuário"
                             type="text"
                             className="w-full p-3 border border-slate-800 rounded-md focus:outline-none focus:ring-2 focus:none bg-transparent text-white"
                         />
                         <input
                             ref={emailRef}
-                            placeholder="Digite seu email"
+                            placeholder="Email"
                             type="email"
                             className="w-full p-3 border border-slate-800 rounded-md focus:outline-none focus:ring-2 focus:none bg-transparent text-white"
                         />
-                        
                         <input
                             ref={passwordRef}
-                            placeholder="Digite sua senha"
+                            placeholder="Senha"
                             type="password"
                             className="w-full p-3 border border-slate-800 rounded-md focus:outline-none focus:ring-2 focus:none bg-transparent text-white"
                         />
                         {passwordError && <p className="text-red-500">{passwordError}</p>}
-                        <div className="grid grid-cols-1 md:grid-cols-2 text-sm text-white">
-                            <p>Mínimo de 8 caracteres</p>
-                            <p>Um caractere minúsculo  </p>
-                            <p>Um caractere maiúsculo</p>
-                            <p>Um número</p>
-                            <p>Um caractere especial</p>
-                            <p>Não usar senha anterior</p>
-                            
-                        </div>
                         <button
                             type="submit"
                             className="w-full bg-teal-600 text-slate-950 font-semibold py-2 rounded-md hover:none transition duration-200"
@@ -107,12 +98,9 @@ function Register() {
                             Inscreva-se
                         </button>
                     </form>
-                    <p className="mt-4 text-center text-sm text-gray-600">
-                        Ao clicar no botão "Inscreva-se", você está criando uma conta e concorda com os Termos de Uso e a Política de Privacidade.
-                    </p>
                     <p className="mt-4 text-center text-gray-600">
                         Já possui uma conta?{' '}
-                        <Link to="/login" className="text-teal-500 hover:underline">
+                        <Link to="/login" className="text-white hover:underline">
                             Entrar
                         </Link>
                     </p>

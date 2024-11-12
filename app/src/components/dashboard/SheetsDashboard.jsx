@@ -20,7 +20,7 @@ const SheetsDashboard = () => {
             });
             setSheets(response.data);
         } catch (err) {
-            alert(err.response?.data || 'Erro desconhecido');
+            console.error('Erro ao excluir campanha:', err);
         } finally {
             setIsLoading(true);
         }

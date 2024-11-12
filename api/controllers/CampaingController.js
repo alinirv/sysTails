@@ -191,9 +191,9 @@ class CampaingController {
             });
 
             if (!campaing) {
-                return res.status(404).json( 'Campanha não encontrada.' );
+                return res.status(404).json('Campanha não encontrada.');
             }
-    
+
             // Atualizar o status da campanha
             const updatedCampaign = await prisma.campaign.update({
                 where: { id: campaing.id },
@@ -201,7 +201,7 @@ class CampaingController {
                     status: 'CLOSED',
                 },
             });
-    
+
             return res.status(200).json(updatedCampaign);
 
         } catch (error) {
@@ -218,23 +218,20 @@ class CampaingController {
                 where: {
                     userId: userId,
                 },
-                include: {
-                    sheets: true,
-                },
             });
 
             if (campaigns.length === 0) {
-                return res.status(404).json({ message: 'No campaigns found for this user.' });
+                return res.status(404).json('No campaigns found for this user.');
             }
 
             return res.status(200).json(campaigns);
         } catch (error) {
             console.error(error);
-            res.status(500).json({ message: 'An error occurred while fetching user campaigns.' });
+            res.status(500).json('An error occurred while fetching user campaigns.');
         }
     }
     async getCampaignByToken(req, res) {
-        const {token}  = req.params; 
+        const { token } = req.params;
         try {
             const campaign = await prisma.campaign.findFirst({
                 where: {
@@ -243,23 +240,23 @@ class CampaingController {
                 include: {
                     sheets: {
                         include: {
-                            sheet: true 
+                            sheet: true
                         }
                     }
                 },
             });
-    
+
             if (!campaign) {
                 return res.status(404).json({ message: 'Campanha não encontrada.' });
             }
-    
+
             return res.status(200).json(campaign);
         } catch (error) {
             console.error('Erro ao buscar campanha:', error);
             res.status(500).json({ message: 'Erro ao buscar a campanha.' });
         }
     }
-    
+
 }
 
 export default CampaingController
