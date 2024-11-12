@@ -91,14 +91,14 @@ class CampaingController {
 
             if (campaigns.length != 0) {
 
-                const campaignSheets = await prisma.CampaignSheets.findMany({
+                const campaignSheets = await prisma.campaignSheets.findMany({
                     where: {
                         campaignId: campaigns.id,
                     },
                 });
 
                 if (campaignSheets.length === 0) {
-                    return res.status(404).json({ message: 'No sheets found for this campaign  .' });
+                    return res.status(404).json('No sheets found for this campaign .');
                 }
 
                 const sheetIds = campaignSheets.map(cs => cs.sheetId);
@@ -111,11 +111,11 @@ class CampaingController {
 
                 return res.status(200).json(sheets);
             }
-            return res.status(404).json({ message: 'Campaigns not found.' });
+            return res.status(404).json('Campaigns not found.');
 
         } catch (error) {
             console.error(error);
-            res.status(500).json({ message: 'An error occurred while fetching campaigns.' });
+            res.status(500).json('An error occurred while fetching campaigns.');
         }
     };
 
@@ -186,27 +186,30 @@ class CampaingController {
         const userId = req.body;
 
         try {
-            const Campaing = await prisma.campaign.findFirst({
+            const campaing = await prisma.campaign.findFirst({
                 where: {
                     token: token,
+                    userId: userId,
                 },
             });
 
-            if (Campaing) {
-                const updatedCampaing = await prisma.campaign.update({
-                    where: { id: Campaing.id, userId: userId },
-                    data: {
-                        status: 'CLOSED',
-                    },
-                });
-                return res.status(200).json(updatedCampaing);
-            } else {
-                return res.status(404).json({ message: 'Campaing not found.' });
+            if (!campaing) {
+                return res.status(404).json( 'Campanha não encontrada.' );
             }
+    
+            // Atualizar o status da campanha
+            const updatedCampaign = await prisma.campaign.update({
+                where: { id: campaing.id },
+                data: {
+                    status: 'CLOSED',
+                },
+            });
+    
+            return res.status(200).json(updatedCampaign);
 
         } catch (error) {
             console.error(error);
-            res.status(500).json({ message: 'An error occurred while updating the Campaing parameter.' });
+            return res.status(500).json({ message: 'An error occurred while updating the Campaing parameter.' });
         }
     };
 
@@ -234,8 +237,7 @@ class CampaingController {
         }
     }
     async getCampaignByToken(req, res) {
-        const {token}  = req.params; // Extração corrigida
-    console.log(token)
+        const {token}  = req.params; 
         try {
             const campaign = await prisma.campaign.findFirst({
                 where: {
@@ -244,7 +246,7 @@ class CampaingController {
                 include: {
                     sheets: {
                         include: {
-                            sheet: true // Inclui os detalhes da ficha associada
+                            sheet: true 
                         }
                     }
                 },

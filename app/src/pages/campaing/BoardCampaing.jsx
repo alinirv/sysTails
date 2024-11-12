@@ -46,13 +46,28 @@ const CampaignDetail = () => {
             setIsModalOpen(true);
         } catch (error) {
             console.error('Erro ao carregar ficha:', error);
-        }      
+        }
     };
 
     // Função para fechar o modal
     const closeModal = () => {
         setIsModalOpen(false);
         setSelectedSheet(null);
+    };
+
+    // Atualiza o estado da campanha
+    const updateCampaignStatus = async (newStatus) => {
+        try {
+            const response = await api.put(`/campaing/update/${token}`, {}, {
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+            });
+    
+            // Atualiza o estado no quadro da campanha
+            setCampaign((prevCampaign) => ({ ...prevCampaign, status: newStatus }));
+        } catch (error) {
+            console.error('Erro ao atualizar o status da campanha:', error);
+            alert('Erro ao atualizar o status da campanha.');
+        }
     };
 
     if (!campaign) return <div>Carregando...</div>;
@@ -67,7 +82,7 @@ const CampaignDetail = () => {
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 ">
                         <p className="mb-4"><span className="font-semibold text-teal-400">Mestre:</span> {campaign.masterName}</p>
                         <p className="mb-4"><span className="font-semibold text-teal-400">Status:</span> {campaign.status}</p>
-                        <div className="flex justify-center items-center gap-4 mb-10">
+                        <div className="flex justify-items-start items-center gap-4 mb-10">
                             <button
                                 onClick={() => navigate('/dashboard')}
                                 className="bg-teal-600 hover:bg-teal-500 text-white font-bold py-1 px-3 rounded transition duration-200 text-sm"
@@ -75,15 +90,15 @@ const CampaignDetail = () => {
                                 Voltar
                             </button>
                             <button
+                                onClick={() => updateCampaignStatus('CLOSED')}
                                 className="bg-teal-600 hover:bg-teal-500 text-white font-bold py-1 px-3 rounded transition duration-200 text-sm"
                             >
                                 Fechar campanha
                             </button>
                         </div>
-                        <div> 
-                            <DiceRoller/>
-                        </div>
+                        <DiceRoller />
                     </div>
+
                     <h3 className="text-2xl font-bold mt-6 text-teal-400">Fichas</h3>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
