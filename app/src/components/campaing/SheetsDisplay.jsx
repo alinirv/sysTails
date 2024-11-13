@@ -1,7 +1,9 @@
 import React from 'react';
+import NotFound from '../utils/NotFound';
 
 const SheetDisplay = ({ sheet }) => {
-    if (!sheet) return <div>Carregando...</div>;
+
+    if (!sheet) return (<div> <NotFound/></div>);
 
     return (
         <div className="bg-slate-950 text-white max-w-screen-lg w-full items-center px-4 py-10 rounded-lg">

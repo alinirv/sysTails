@@ -55,7 +55,7 @@ const Navibar = () => {
                             </li>
                             <li data-twe-nav-item-ref>
                                 <Link
-                                    to="/sobre"
+                                    to="/not-found"
                                     className="text-white transition duration-200 hover:text-teal-500 focus:text-teal-500"
                                     aria-current="page"
                                     data-twe-nav-link-ref

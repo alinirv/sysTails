@@ -12,6 +12,7 @@ import JoinCampaign from './pages/campaing/JoinCampaign'
 import CampaignDetail from './pages/campaing/BoardCampaing'
 import RequestPassword from './pages/auth/RequestPassword'
 import ResetPassword from './pages/auth/ResetPassword'
+import NotFound from './components/utils/NotFound'
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/request-password" element={<RequestPassword/>} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
+        <Route path='/not-found' element={<NotFound/>}/>
 
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<UserDashboard />} />

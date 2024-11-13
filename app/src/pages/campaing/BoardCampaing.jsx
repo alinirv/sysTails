@@ -6,6 +6,7 @@ import SheetDisplay from '../../components/campaing/SheetsDisplay';
 import Navibar from '../../components/header/Navibar';
 import Footer from '../../components/footer/Footer';
 import DiceRoller from '../../components/dice/DiceController';
+import NotFound from '../../components/utils/NotFound';
 
 
 const CampaignDetail = () => {
@@ -93,7 +94,7 @@ const CampaignDetail = () => {
 
     }
 
-    if (!campaign) return <div>Carregando...</div>;
+    if (!campaign) return <div><NotFound/></div>;
 
     return (
         <div>
