@@ -1,29 +1,33 @@
-// app/src/pages/login/index.jsx
 import { useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Footer from '../../components/footer/Footer';
 import Navibar from '../../components/header/Navibar';
 import api from '../../services/api';
 
-function Login() {
-    const emailRef = useRef();
+
+
+function ResetPassword() {
+    const { token } = useParams();
     const passwordRef = useRef();
+    const confirmPasswordRef = useRef();
     const navigate = useNavigate();
 
     async function handleSubmit(event) {
         event.preventDefault();
-        try {
-            const { data: token } = await api.post('/login', {
-                password: passwordRef.current.value,
-                email: emailRef.current.value,
-            });
+        if (passwordRef.current.value !== confirmPasswordRef.current.value) {
+            alert('As senhas não coincidem.');
+            return;
+        }
 
-            if (token) {
-                localStorage.setItem('token', token);
-                navigate('/dashboard');
-            }
+        try {
+            await api.post('/reset-password', {
+                token,
+                password: passwordRef.current.value,
+            });
+            alert('Senha redefinida com sucesso! Você pode fazer login agora.');
+            navigate('/login'); // Redireciona para a página de login após redefinir a senha
         } catch (err) {
-            alert(err.response?.data || 'Erro desconhecido');
+            alert(err.response?.data || 'Erro ao redefinir a senha.');
         }
     }
 
@@ -32,36 +36,32 @@ function Login() {
             <Navibar />
             <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-slate-900 to-teal-700">
                 <div className="bg-slate-950 rounded-lg shadow-lg p-8 max-w-md w-full">
-                    <h2 className="text-2xl font-bold text-center text-white mb-6">Login</h2>
+                    <h2 className="text-2xl font-bold text-center text-white mb-6">Definir Nova Senha</h2>
                     <form className="space-y-4" onSubmit={handleSubmit}>
                         <input
-                            ref={emailRef}
-                            placeholder="Email"
-                            type="email"
+                            ref={passwordRef}
+                            placeholder="Nova Senha"
+                            type="password"
+                            required
                             className="w-full p-3 border border-slate-800 rounded-md focus:outline-none focus:ring-2 focus:none bg-transparent text-white"
                         />
                         <input
-                            ref={passwordRef}
-                            placeholder="Senha"
+                            ref={confirmPasswordRef}
+                            placeholder="Confirmar Nova Senha"
                             type="password"
+                            required
                             className="w-full p-3 border border-slate-800 rounded-md focus:outline-none focus:ring-2 focus:none bg-transparent text-white"
                         />
                         <button
                             type="submit"
                             className="w-full bg-teal-600 text-slate-950 font-semibold py-2 rounded-md hover:none transition duration-200"
                         >
-                            Entrar
+                            Redefinir Senha
                         </button>
                     </form>
                     <p className="mt-4 text-center text-gray-600">
-                        <Link to='/request-password' className="text-white hover:underline">
-                            Recuperar Senha
-                        </Link>
-                    </p>
-                    <p className="mt-4 text-center text-gray-600">
-                        Ainda não possui uma conta?{' '}
-                        <Link to='/signup' className="text-white hover:underline">
-                            Inscreva-se
+                        <Link to='/' className="text-white hover:underline">
+                            Voltar
                         </Link>
                     </p>
                 </div>
@@ -71,4 +71,4 @@ function Login() {
     );
 }
 
-export default Login;
+export default ResetPassword;

@@ -63,11 +63,11 @@ class AuthController {
                 },
             });
 
-            const resetLink = `http://localhost:3000/reset-password/${resetToken}`;
+            const resetLink = `http://localhost:5173/reset-password/${resetToken}`;
             await sendEmail(email, "Recuperação de Senha", `Clique no link: ${resetLink}`);
             
             //Avaliação de teste, retirar em produção
-            res.status(200).json(`http://localhost:3000/reset-password/${resetToken}`);
+            res.status(200).json(`http://localhost:5173/reset-password/${resetToken}`);
         } catch (error) {
             console.log(error) 
             res.status(500).json("Erro ao solicitar redefinição.");
